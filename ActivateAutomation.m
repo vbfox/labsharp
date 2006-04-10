@@ -1,0 +1,1 @@
+enableservice('AutomationServer', true)
