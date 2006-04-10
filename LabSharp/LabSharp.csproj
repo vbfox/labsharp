@@ -7,8 +7,8 @@
     <ProjectGuid>{5EB8EB8B-5765-4982-B2DE-AF843C4B0130}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MatSharp</RootNamespace>
-    <AssemblyName>MatSharp</AssemblyName>
+    <RootNamespace>LabSharp</RootNamespace>
+    <AssemblyName>LabSharp</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
