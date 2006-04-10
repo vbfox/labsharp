@@ -7,8 +7,8 @@
     <ProjectGuid>{9699DEB0-8635-400F-B2EA-2737341BBCC1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestMatlabWrapper</RootNamespace>
-    <AssemblyName>TestMatlabWrapper</AssemblyName>
+    <RootNamespace>LabSharp.Tests</RootNamespace>
+    <AssemblyName>LabSharp.Tests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

@@ -7,8 +7,8 @@
     <ProjectGuid>{2687F97B-6331-429F-B601-40CE3736026A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MatSharp.NativeFunctions</RootNamespace>
-    <AssemblyName>MatSharp.NativeFunctions</AssemblyName>
+    <RootNamespace>LabSharp.NativeFunctions</RootNamespace>
+    <AssemblyName>LabSharp.NativeFunctions</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
