@@ -529,7 +529,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "char"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "char"));
             }
             
             return result;
@@ -620,7 +620,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "bool"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "bool"));
             }
             
             return result;
@@ -711,7 +711,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "sbyte"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "sbyte"));
             }
             
             return result;
@@ -802,7 +802,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "byte"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "byte"));
             }
             
             return result;
@@ -937,7 +937,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "ushort"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "ushort"));
             }
             
             return result;
@@ -1100,7 +1100,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "short"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "short"));
             }
             
             return result;
@@ -1307,7 +1307,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "uint"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "uint"));
             }
             
             return result;
@@ -1542,7 +1542,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "int"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "int"));
             }
             
             return result;
@@ -1821,7 +1821,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "ulong"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "ulong"));
             }
             
             return result;
@@ -2128,7 +2128,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "long"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "long"));
             }
             
             return result;
@@ -2479,7 +2479,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "float"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "float"));
             }
             
             return result;
@@ -2880,7 +2880,7 @@ namespace LabSharp
                 }
 
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "double"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "double"));
             }
             
             return result;
