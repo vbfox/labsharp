@@ -27,7 +27,7 @@ namespace LabSharp
     public static partial class MxConvert
     {
         /// <summary>
-        /// Cas spécial pour les strings, utile car si non les stings ne sont que
+        /// Cas spécial pour les strings, utile car si non les strings ne sont que
         /// des char[].
         /// 
         /// </summary>
