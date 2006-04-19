@@ -9,17 +9,27 @@ namespace LabSharp.Tests
     public class ReadDoubles
     {
         Engine m_eng;
+        MxArray m_temp;
 
         [SetUp]
         public void Setup()
         {
             m_eng = Engine.Open(false);
+            m_temp = m_eng.GetVariable("val");
         }
 
         [TearDown]
         public void TearDown()
         {
-            m_eng.Eval("clear val");
+            if (m_temp != null)
+            {
+                m_eng.SetVariable("val", m_temp);
+                m_temp.Destroy();
+            }
+            else
+            {
+                m_eng.Eval("clear val");
+            }
         }
 
         [Test]
