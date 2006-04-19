@@ -4,7 +4,7 @@
 <xsl:output method="text" encoding="UTF-8" indent="yes" />
 <xsl:preserve-space elements="*" />
 <xsl:template match="/MxConvert">/*
- * Mat# - Matlab interaction library for .Net
+ * Lab# - Matlab interaction library for .Net
  * 
  * Copyright (C) 2005 Julien Roncaglia
  *
@@ -31,7 +31,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MatSharp
+namespace LabSharp
 {
     public static partial class MxConvert
     {
@@ -264,7 +264,7 @@ namespace MatSharp
                     <xsl:with-param name="from" select="self::*" />
                 </xsl:call-template>
                 default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "<xsl:value-of select="@csharpType" />"));
+                    throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, "<xsl:value-of select="@csharpType" />"));
             }
             
             return result;
