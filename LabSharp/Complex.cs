@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LabSharp
 {
-    public struct Complex<T>
+    public struct Complex<T> where T : struct
     {
         T m_realPart;
 
@@ -22,14 +22,10 @@ namespace LabSharp
             set { m_imaginaryPart = value; }
         }
 
-        static Complex<TResult> FromRealImaginary<TResult>(TResult real, TResult imaginary)
+        Complex(T realPart, T imaginaryPart)
         {
-            Complex<TResult> result = new Complex<TResult>();
-
-            result.RealPart = real;
-            result.ImaginaryPart = imaginary;
-
-            return result;
+            m_realPart = realPart;
+            m_imaginaryPart = imaginaryPart;
         }
     }
 }
