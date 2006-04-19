@@ -116,7 +116,7 @@ namespace LabSharp
             OutputToBuffer(IntPtr.Zero, 0);
         }
 
-        public void PutVariable(string var_name, MxArray array)
+        public void SetVariable(string var_name, MxArray array)
         {
             CheckPointer();
             if (LibEng.engPutVariable(m_engine, var_name, array.NativeObject) != 0)
