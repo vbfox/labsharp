@@ -46,6 +46,7 @@
     <Compile Include="MxConvert.Generated.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Complex.cs" />
     <Compile Include="MxArray.IsClass.cs" />
     <Compile Include="MxArray.Struct.cs" />
   </ItemGroup>
