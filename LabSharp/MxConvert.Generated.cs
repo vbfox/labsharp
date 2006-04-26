@@ -37,7 +37,7 @@ namespace LabSharp
         /// <summary>
         /// Convert a mxArray to the corresponding type of array.
         /// </summary>
-        /// </remarks>
+        /// <remarks>
         /// No conversion of type occurs, if the ClassID is Single, a float[] will be
         /// returned and never a double[].
         /// </remarks>
@@ -47,40 +47,40 @@ namespace LabSharp
             {
                 
                 case ClassID.Char:
-                    return _ToCharArray(array);
+                    return _ToCharArray(array);             
 
                 case ClassID.Logical:
-                    return _ToBooleanArray(array);
+                    return _ToBooleanArray(array);             
 
                 case ClassID.Int8:
-                    return _ToSByteArray(array);
+                    return _ToSByteArray(array);             
 
                 case ClassID.UInt8:
-                    return _ToByteArray(array);
+                    return _ToByteArray(array);             
 
                 case ClassID.UInt16:
-                    return _ToUInt16Array(array);
+                    return _ToUInt16Array(array);             
 
                 case ClassID.Int16:
-                    return _ToInt16Array(array);
+                    return _ToInt16Array(array);             
 
                 case ClassID.UInt32:
-                    return _ToUInt32Array(array);
+                    return _ToUInt32Array(array);             
 
                 case ClassID.Int32:
-                    return _ToInt32Array(array);
+                    return _ToInt32Array(array);             
 
                 case ClassID.UInt64:
-                    return _ToUInt64Array(array);
+                    return _ToUInt64Array(array);             
 
                 case ClassID.Int64:
-                    return _ToInt64Array(array);
+                    return _ToInt64Array(array);             
 
                 case ClassID.Single:
-                    return _ToSingleArray(array);
+                    return _ToSingleArray(array);             
 
                 case ClassID.Double:
-                    return _ToDoubleArray(array);
+                    return _ToDoubleArray(array);             
 
                 default:
                     throw new InvalidCastException(string.Format(NO_DOTNET_TYPE, classId));
@@ -90,7 +90,7 @@ namespace LabSharp
         /// <summary>
         /// Convert a mxArray to the corresponding basic object (Not an array).
         /// </summary>
-        /// </remarks>
+        /// <remarks>
         /// No conversion of type occurs, if the ClassID is Single, a float will be
         /// returned and never a double.
         /// </remarks>        
@@ -100,40 +100,124 @@ namespace LabSharp
             {
                 
                 case ClassID.Char:
-                    return _ToChar(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToChar_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToChar(array);
+                    }
 
                 case ClassID.Logical:
-                    return _ToBoolean(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToBoolean_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToBoolean(array);
+                    }
 
                 case ClassID.Int8:
-                    return _ToSByte(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToSByte_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToSByte(array);
+                    }
 
                 case ClassID.UInt8:
-                    return _ToByte(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToByte_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToByte(array);
+                    }
 
                 case ClassID.UInt16:
-                    return _ToUInt16(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToUInt16_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToUInt16(array);
+                    }
 
                 case ClassID.Int16:
-                    return _ToInt16(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToInt16_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToInt16(array);
+                    }
 
                 case ClassID.UInt32:
-                    return _ToUInt32(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToUInt32_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToUInt32(array);
+                    }
 
                 case ClassID.Int32:
-                    return _ToInt32(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToInt32_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToInt32(array);
+                    }
 
                 case ClassID.UInt64:
-                    return _ToUInt64(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToUInt64_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToUInt64(array);
+                    }
 
                 case ClassID.Int64:
-                    return _ToInt64(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToInt64_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToInt64(array);
+                    }
 
                 case ClassID.Single:
-                    return _ToSingle(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToSingle_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToSingle(array);
+                    }
 
                 case ClassID.Double:
-                    return _ToDouble(array);
+                    if (array.IsComplex)
+                    {
+                        return _ToDouble_Cplx(array);
+                    }
+                    else
+                    {
+                        return _ToDouble(array);
+                    }
 
                 default:
                     throw new InvalidCastException(string.Format(NO_DOTNET_TYPE, classId));
@@ -143,7 +227,7 @@ namespace LabSharp
         /// <summary>
         /// Try to convert a mxArray a specified .Net type.
         /// </summary>
-        /// </remarks>
+        /// <remarks>
         /// <para>
         ///     A conversion could occurs, if you ask for a double[,] but the content is
         ///     a 2 dimensions mxArray of Single it will be converted to a double[,].
@@ -160,13 +244,21 @@ namespace LabSharp
             // get dimensions, element type and other details; and the Array class that could contain
             // any array.
             bool isArray = genericType.IsArray;
+            bool isComplex = array.IsComplex;
             Type arrayElementType = genericType.GetElementType();
 
             
     if (genericType == typeof(char))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToChar(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToChar_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToChar(array);
+        }
     }
     else if(arrayElementType == typeof(char))
     {
@@ -192,7 +284,14 @@ namespace LabSharp
     if (genericType == typeof(bool))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToBoolean(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToBoolean_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToBoolean(array);
+        }
     }
     else if(arrayElementType == typeof(bool))
     {
@@ -218,7 +317,14 @@ namespace LabSharp
     if (genericType == typeof(sbyte))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToSByte(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToSByte_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToSByte(array);
+        }
     }
     else if(arrayElementType == typeof(sbyte))
     {
@@ -244,7 +350,14 @@ namespace LabSharp
     if (genericType == typeof(byte))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToByte(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToByte_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToByte(array);
+        }
     }
     else if(arrayElementType == typeof(byte))
     {
@@ -270,7 +383,14 @@ namespace LabSharp
     if (genericType == typeof(ushort))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToUInt16(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToUInt16_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToUInt16(array);
+        }
     }
     else if(arrayElementType == typeof(ushort))
     {
@@ -296,7 +416,14 @@ namespace LabSharp
     if (genericType == typeof(short))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToInt16(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToInt16_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToInt16(array);
+        }
     }
     else if(arrayElementType == typeof(short))
     {
@@ -322,7 +449,14 @@ namespace LabSharp
     if (genericType == typeof(uint))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToUInt32(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToUInt32_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToUInt32(array);
+        }
     }
     else if(arrayElementType == typeof(uint))
     {
@@ -348,7 +482,14 @@ namespace LabSharp
     if (genericType == typeof(int))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToInt32(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToInt32_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToInt32(array);
+        }
     }
     else if(arrayElementType == typeof(int))
     {
@@ -374,7 +515,14 @@ namespace LabSharp
     if (genericType == typeof(ulong))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToUInt64(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToUInt64_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToUInt64(array);
+        }
     }
     else if(arrayElementType == typeof(ulong))
     {
@@ -400,7 +548,14 @@ namespace LabSharp
     if (genericType == typeof(long))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToInt64(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToInt64_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToInt64(array);
+        }
     }
     else if(arrayElementType == typeof(long))
     {
@@ -426,7 +581,14 @@ namespace LabSharp
     if (genericType == typeof(float))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToSingle(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToSingle_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToSingle(array);
+        }
     }
     else if(arrayElementType == typeof(float))
     {
@@ -452,7 +614,14 @@ namespace LabSharp
     if (genericType == typeof(double))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_ToDouble(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_ToDouble_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_ToDouble(array);
+        }
     }
     else if(arrayElementType == typeof(double))
     {
@@ -487,16 +656,16 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.Char :
                 {
-                    char* p;
-                    p = (char*)array.RealElements;
+                    char* pr;
+                    pr = (char*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -504,14 +673,42 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "char"));
             }
         }
-        
+
+        public unsafe static Complex<char> _ToChar_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.Char :
+                {
+                    char* pr, pi;
+                    pr = (char*)array.RealElements;
+                    pi = (char*)array.ImaginaryElements;
+                    Complex<char> result;
+                    
+                    result = new Complex<char>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<char>"));
+            }
+        }
+
         public unsafe static char[] _ToCharArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		char[] result = new char[count];
-        		
+                char[] result = new char[count];
+                
             switch(classId)
             {
                 
@@ -540,19 +737,53 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(char), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<char>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.Char :
+                {
+                    char* pr, pi;
+                    pr = (char*)array.RealElements;
+                    pi = (char*)array.ImaginaryElements;
+                    Complex<char> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<char>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<char>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(char), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.Char :
                 {
                     char* p;
                     p = (char*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -561,8 +792,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "char"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "char"));
+                }
             }
             
             return result;
@@ -578,16 +811,16 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.Logical :
                 {
-                    bool* p;
-                    p = (bool*)array.RealElements;
+                    bool* pr;
+                    pr = (bool*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -595,14 +828,42 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "bool"));
             }
         }
-        
+
+        public unsafe static Complex<bool> _ToBoolean_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.Logical :
+                {
+                    bool* pr, pi;
+                    pr = (bool*)array.RealElements;
+                    pi = (bool*)array.ImaginaryElements;
+                    Complex<bool> result;
+                    
+                    result = new Complex<bool>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<bool>"));
+            }
+        }
+
         public unsafe static bool[] _ToBooleanArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		bool[] result = new bool[count];
-        		
+                bool[] result = new bool[count];
+                
             switch(classId)
             {
                 
@@ -631,19 +892,53 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(bool), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<bool>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.Logical :
+                {
+                    bool* pr, pi;
+                    pr = (bool*)array.RealElements;
+                    pi = (bool*)array.ImaginaryElements;
+                    Complex<bool> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<bool>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<bool>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(bool), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.Logical :
                 {
                     bool* p;
                     p = (bool*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -652,8 +947,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "bool"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "bool"));
+                }
             }
             
             return result;
@@ -669,16 +966,16 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -686,14 +983,42 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "sbyte"));
             }
         }
-        
+
+        public unsafe static Complex<sbyte> _ToSByte_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<sbyte> result;
+                    
+                    result = new Complex<sbyte>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<sbyte>"));
+            }
+        }
+
         public unsafe static sbyte[] _ToSByteArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		sbyte[] result = new sbyte[count];
-        		
+                sbyte[] result = new sbyte[count];
+                
             switch(classId)
             {
                 
@@ -722,19 +1047,53 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(sbyte), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<sbyte>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<sbyte> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<sbyte>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<sbyte>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(sbyte), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.Int8 :
                 {
                     sbyte* p;
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -743,8 +1102,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "sbyte"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "sbyte"));
+                }
             }
             
             return result;
@@ -760,16 +1121,16 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -777,14 +1138,42 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "byte"));
             }
         }
-        
+
+        public unsafe static Complex<byte> _ToByte_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<byte> result;
+                    
+                    result = new Complex<byte>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<byte>"));
+            }
+        }
+
         public unsafe static byte[] _ToByteArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		byte[] result = new byte[count];
-        		
+                byte[] result = new byte[count];
+                
             switch(classId)
             {
                 
@@ -813,19 +1202,53 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(byte), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<byte>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<byte> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<byte>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<byte>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(byte), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -834,8 +1257,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "byte"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "byte"));
+                }
             }
             
             return result;
@@ -851,34 +1276,34 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return (ushort)(*p);
+                    return (ushort)(*pr);
                     
                 }
 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return (ushort)(*p);
+                    return (ushort)(*pr);
                     
                 }
 
                 case ClassID.UInt16 :
                 {
-                    ushort* p;
-                    p = (ushort*)array.RealElements;
+                    ushort* pr;
+                    pr = (ushort*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -886,14 +1311,70 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "ushort"));
             }
         }
-        
+
+        public unsafe static Complex<ushort> _ToUInt16_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<ushort> result;
+                    
+                    result = new Complex<ushort>(
+                        (ushort)(*pr),
+                        (ushort)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<ushort> result;
+                    
+                    result = new Complex<ushort>(
+                        (ushort)(*pr),
+                        (ushort)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<ushort> result;
+                    
+                    result = new Complex<ushort>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<ushort>"));
+            }
+        }
+
         public unsafe static ushort[] _ToUInt16Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		ushort[] result = new ushort[count];
-        		
+                ushort[] result = new ushort[count];
+                
             switch(classId)
             {
                 
@@ -948,19 +1429,93 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(ushort), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<ushort>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<ushort> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ushort>(
+                            (ushort)(*pr++),
+                            (ushort)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<ushort> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ushort>(
+                            (ushort)(*pr++),
+                            (ushort)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<ushort> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ushort>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<ushort>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(ushort), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((ushort)(*p++), coords);
@@ -975,6 +1530,7 @@ namespace LabSharp
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((ushort)(*p++), coords);
@@ -989,6 +1545,7 @@ namespace LabSharp
                     p = (ushort*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -997,8 +1554,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "ushort"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "ushort"));
+                }
             }
             
             return result;
@@ -1014,34 +1573,34 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return (short)(*p);
+                    return (short)(*pr);
                     
                 }
 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return (short)(*p);
+                    return (short)(*pr);
                     
                 }
 
                 case ClassID.Int16 :
                 {
-                    short* p;
-                    p = (short*)array.RealElements;
+                    short* pr;
+                    pr = (short*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -1049,14 +1608,70 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "short"));
             }
         }
-        
+
+        public unsafe static Complex<short> _ToInt16_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<short> result;
+                    
+                    result = new Complex<short>(
+                        (short)(*pr),
+                        (short)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<short> result;
+                    
+                    result = new Complex<short>(
+                        (short)(*pr),
+                        (short)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<short> result;
+                    
+                    result = new Complex<short>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<short>"));
+            }
+        }
+
         public unsafe static short[] _ToInt16Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		short[] result = new short[count];
-        		
+                short[] result = new short[count];
+                
             switch(classId)
             {
                 
@@ -1111,19 +1726,93 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(short), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<short>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<short> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<short>(
+                            (short)(*pr++),
+                            (short)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<short> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<short>(
+                            (short)(*pr++),
+                            (short)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<short> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<short>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<short>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(short), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((short)(*p++), coords);
@@ -1138,6 +1827,7 @@ namespace LabSharp
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((short)(*p++), coords);
@@ -1152,6 +1842,7 @@ namespace LabSharp
                     p = (short*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -1160,8 +1851,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "short"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "short"));
+                }
             }
             
             return result;
@@ -1177,52 +1870,52 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return (uint)(*p);
+                    return (uint)(*pr);
                     
                 }
 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return (uint)(*p);
+                    return (uint)(*pr);
                     
                 }
 
                 case ClassID.UInt16 :
                 {
-                    ushort* p;
-                    p = (ushort*)array.RealElements;
+                    ushort* pr;
+                    pr = (ushort*)array.RealElements;                
                     
-                    return (uint)(*p);
+                    return (uint)(*pr);
                     
                 }
 
                 case ClassID.Int16 :
                 {
-                    short* p;
-                    p = (short*)array.RealElements;
+                    short* pr;
+                    pr = (short*)array.RealElements;                
                     
-                    return (uint)(*p);
+                    return (uint)(*pr);
                     
                 }
 
                 case ClassID.UInt32 :
                 {
-                    uint* p;
-                    p = (uint*)array.RealElements;
+                    uint* pr;
+                    pr = (uint*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -1230,14 +1923,98 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "uint"));
             }
         }
-        
+
+        public unsafe static Complex<uint> _ToUInt32_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<uint> result;
+                    
+                    result = new Complex<uint>(
+                        (uint)(*pr),
+                        (uint)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<uint> result;
+                    
+                    result = new Complex<uint>(
+                        (uint)(*pr),
+                        (uint)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<uint> result;
+                    
+                    result = new Complex<uint>(
+                        (uint)(*pr),
+                        (uint)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<uint> result;
+                    
+                    result = new Complex<uint>(
+                        (uint)(*pr),
+                        (uint)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<uint> result;
+                    
+                    result = new Complex<uint>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<uint>"));
+            }
+        }
+
         public unsafe static uint[] _ToUInt32Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		uint[] result = new uint[count];
-        		
+                uint[] result = new uint[count];
+                
             switch(classId)
             {
                 
@@ -1318,19 +2095,133 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(uint), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<uint>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<uint> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<uint>(
+                            (uint)(*pr++),
+                            (uint)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<uint> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<uint>(
+                            (uint)(*pr++),
+                            (uint)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<uint> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<uint>(
+                            (uint)(*pr++),
+                            (uint)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<uint> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<uint>(
+                            (uint)(*pr++),
+                            (uint)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<uint> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<uint>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<uint>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(uint), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((uint)(*p++), coords);
@@ -1345,6 +2236,7 @@ namespace LabSharp
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((uint)(*p++), coords);
@@ -1359,6 +2251,7 @@ namespace LabSharp
                     p = (ushort*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((uint)(*p++), coords);
@@ -1373,6 +2266,7 @@ namespace LabSharp
                     p = (short*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((uint)(*p++), coords);
@@ -1387,6 +2281,7 @@ namespace LabSharp
                     p = (uint*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -1395,8 +2290,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "uint"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "uint"));
+                }
             }
             
             return result;
@@ -1412,52 +2309,52 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return (int)(*p);
+                    return (int)(*pr);
                     
                 }
 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return (int)(*p);
+                    return (int)(*pr);
                     
                 }
 
                 case ClassID.UInt16 :
                 {
-                    ushort* p;
-                    p = (ushort*)array.RealElements;
+                    ushort* pr;
+                    pr = (ushort*)array.RealElements;                
                     
-                    return (int)(*p);
+                    return (int)(*pr);
                     
                 }
 
                 case ClassID.Int16 :
                 {
-                    short* p;
-                    p = (short*)array.RealElements;
+                    short* pr;
+                    pr = (short*)array.RealElements;                
                     
-                    return (int)(*p);
+                    return (int)(*pr);
                     
                 }
 
                 case ClassID.Int32 :
                 {
-                    int* p;
-                    p = (int*)array.RealElements;
+                    int* pr;
+                    pr = (int*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -1465,14 +2362,98 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "int"));
             }
         }
-        
+
+        public unsafe static Complex<int> _ToInt32_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<int> result;
+                    
+                    result = new Complex<int>(
+                        (int)(*pr),
+                        (int)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<int> result;
+                    
+                    result = new Complex<int>(
+                        (int)(*pr),
+                        (int)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<int> result;
+                    
+                    result = new Complex<int>(
+                        (int)(*pr),
+                        (int)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<int> result;
+                    
+                    result = new Complex<int>(
+                        (int)(*pr),
+                        (int)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<int> result;
+                    
+                    result = new Complex<int>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<int>"));
+            }
+        }
+
         public unsafe static int[] _ToInt32Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		int[] result = new int[count];
-        		
+                int[] result = new int[count];
+                
             switch(classId)
             {
                 
@@ -1553,19 +2534,133 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(int), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<int>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<int> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<int>(
+                            (int)(*pr++),
+                            (int)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<int> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<int>(
+                            (int)(*pr++),
+                            (int)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<int> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<int>(
+                            (int)(*pr++),
+                            (int)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<int> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<int>(
+                            (int)(*pr++),
+                            (int)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<int> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<int>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<int>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(int), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((int)(*p++), coords);
@@ -1580,6 +2675,7 @@ namespace LabSharp
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((int)(*p++), coords);
@@ -1594,6 +2690,7 @@ namespace LabSharp
                     p = (ushort*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((int)(*p++), coords);
@@ -1608,6 +2705,7 @@ namespace LabSharp
                     p = (short*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((int)(*p++), coords);
@@ -1622,6 +2720,7 @@ namespace LabSharp
                     p = (int*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -1630,8 +2729,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "int"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "int"));
+                }
             }
             
             return result;
@@ -1647,70 +2748,70 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return (ulong)(*p);
+                    return (ulong)(*pr);
                     
                 }
 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return (ulong)(*p);
+                    return (ulong)(*pr);
                     
                 }
 
                 case ClassID.UInt16 :
                 {
-                    ushort* p;
-                    p = (ushort*)array.RealElements;
+                    ushort* pr;
+                    pr = (ushort*)array.RealElements;                
                     
-                    return (ulong)(*p);
+                    return (ulong)(*pr);
                     
                 }
 
                 case ClassID.Int16 :
                 {
-                    short* p;
-                    p = (short*)array.RealElements;
+                    short* pr;
+                    pr = (short*)array.RealElements;                
                     
-                    return (ulong)(*p);
+                    return (ulong)(*pr);
                     
                 }
 
                 case ClassID.UInt32 :
                 {
-                    uint* p;
-                    p = (uint*)array.RealElements;
+                    uint* pr;
+                    pr = (uint*)array.RealElements;                
                     
-                    return (ulong)(*p);
+                    return (ulong)(*pr);
                     
                 }
 
                 case ClassID.Int32 :
                 {
-                    int* p;
-                    p = (int*)array.RealElements;
+                    int* pr;
+                    pr = (int*)array.RealElements;                
                     
-                    return (ulong)(*p);
+                    return (ulong)(*pr);
                     
                 }
 
                 case ClassID.UInt64 :
                 {
-                    ulong* p;
-                    p = (ulong*)array.RealElements;
+                    ulong* pr;
+                    pr = (ulong*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -1718,14 +2819,126 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "ulong"));
             }
         }
-        
+
+        public unsafe static Complex<ulong> _ToUInt64_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<ulong> result;
+                    
+                    result = new Complex<ulong>(
+                        (ulong)(*pr),
+                        (ulong)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<ulong> result;
+                    
+                    result = new Complex<ulong>(
+                        (ulong)(*pr),
+                        (ulong)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<ulong> result;
+                    
+                    result = new Complex<ulong>(
+                        (ulong)(*pr),
+                        (ulong)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<ulong> result;
+                    
+                    result = new Complex<ulong>(
+                        (ulong)(*pr),
+                        (ulong)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<ulong> result;
+                    
+                    result = new Complex<ulong>(
+                        (ulong)(*pr),
+                        (ulong)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<ulong> result;
+                    
+                    result = new Complex<ulong>(
+                        (ulong)(*pr),
+                        (ulong)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt64 :
+                {
+                    ulong* pr, pi;
+                    pr = (ulong*)array.RealElements;
+                    pi = (ulong*)array.ImaginaryElements;
+                    Complex<ulong> result;
+                    
+                    result = new Complex<ulong>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<ulong>"));
+            }
+        }
+
         public unsafe static ulong[] _ToUInt64Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		ulong[] result = new ulong[count];
-        		
+                ulong[] result = new ulong[count];
+                
             switch(classId)
             {
                 
@@ -1832,19 +3045,173 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(ulong), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<ulong>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<ulong> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ulong>(
+                            (ulong)(*pr++),
+                            (ulong)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<ulong> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ulong>(
+                            (ulong)(*pr++),
+                            (ulong)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<ulong> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ulong>(
+                            (ulong)(*pr++),
+                            (ulong)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<ulong> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ulong>(
+                            (ulong)(*pr++),
+                            (ulong)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<ulong> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ulong>(
+                            (ulong)(*pr++),
+                            (ulong)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<ulong> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ulong>(
+                            (ulong)(*pr++),
+                            (ulong)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt64 :
+                {
+                    ulong* pr, pi;
+                    pr = (ulong*)array.RealElements;
+                    pi = (ulong*)array.ImaginaryElements;
+                    Complex<ulong> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<ulong>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<ulong>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(ulong), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((ulong)(*p++), coords);
@@ -1859,6 +3226,7 @@ namespace LabSharp
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((ulong)(*p++), coords);
@@ -1873,6 +3241,7 @@ namespace LabSharp
                     p = (ushort*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((ulong)(*p++), coords);
@@ -1887,6 +3256,7 @@ namespace LabSharp
                     p = (short*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((ulong)(*p++), coords);
@@ -1901,6 +3271,7 @@ namespace LabSharp
                     p = (uint*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((ulong)(*p++), coords);
@@ -1915,6 +3286,7 @@ namespace LabSharp
                     p = (int*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((ulong)(*p++), coords);
@@ -1929,6 +3301,7 @@ namespace LabSharp
                     p = (ulong*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -1937,8 +3310,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "ulong"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "ulong"));
+                }
             }
             
             return result;
@@ -1954,70 +3329,70 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return (long)(*p);
+                    return (long)(*pr);
                     
                 }
 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return (long)(*p);
+                    return (long)(*pr);
                     
                 }
 
                 case ClassID.UInt16 :
                 {
-                    ushort* p;
-                    p = (ushort*)array.RealElements;
+                    ushort* pr;
+                    pr = (ushort*)array.RealElements;                
                     
-                    return (long)(*p);
+                    return (long)(*pr);
                     
                 }
 
                 case ClassID.Int16 :
                 {
-                    short* p;
-                    p = (short*)array.RealElements;
+                    short* pr;
+                    pr = (short*)array.RealElements;                
                     
-                    return (long)(*p);
+                    return (long)(*pr);
                     
                 }
 
                 case ClassID.UInt32 :
                 {
-                    uint* p;
-                    p = (uint*)array.RealElements;
+                    uint* pr;
+                    pr = (uint*)array.RealElements;                
                     
-                    return (long)(*p);
+                    return (long)(*pr);
                     
                 }
 
                 case ClassID.Int32 :
                 {
-                    int* p;
-                    p = (int*)array.RealElements;
+                    int* pr;
+                    pr = (int*)array.RealElements;                
                     
-                    return (long)(*p);
+                    return (long)(*pr);
                     
                 }
 
                 case ClassID.Int64 :
                 {
-                    long* p;
-                    p = (long*)array.RealElements;
+                    long* pr;
+                    pr = (long*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -2025,14 +3400,126 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "long"));
             }
         }
-        
+
+        public unsafe static Complex<long> _ToInt64_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<long> result;
+                    
+                    result = new Complex<long>(
+                        (long)(*pr),
+                        (long)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<long> result;
+                    
+                    result = new Complex<long>(
+                        (long)(*pr),
+                        (long)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<long> result;
+                    
+                    result = new Complex<long>(
+                        (long)(*pr),
+                        (long)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<long> result;
+                    
+                    result = new Complex<long>(
+                        (long)(*pr),
+                        (long)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<long> result;
+                    
+                    result = new Complex<long>(
+                        (long)(*pr),
+                        (long)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<long> result;
+                    
+                    result = new Complex<long>(
+                        (long)(*pr),
+                        (long)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int64 :
+                {
+                    long* pr, pi;
+                    pr = (long*)array.RealElements;
+                    pi = (long*)array.ImaginaryElements;
+                    Complex<long> result;
+                    
+                    result = new Complex<long>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<long>"));
+            }
+        }
+
         public unsafe static long[] _ToInt64Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		long[] result = new long[count];
-        		
+                long[] result = new long[count];
+                
             switch(classId)
             {
                 
@@ -2139,19 +3626,173 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(long), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<long>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<long> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<long>(
+                            (long)(*pr++),
+                            (long)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<long> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<long>(
+                            (long)(*pr++),
+                            (long)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<long> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<long>(
+                            (long)(*pr++),
+                            (long)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<long> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<long>(
+                            (long)(*pr++),
+                            (long)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<long> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<long>(
+                            (long)(*pr++),
+                            (long)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<long> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<long>(
+                            (long)(*pr++),
+                            (long)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int64 :
+                {
+                    long* pr, pi;
+                    pr = (long*)array.RealElements;
+                    pi = (long*)array.ImaginaryElements;
+                    Complex<long> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<long>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<long>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(long), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((long)(*p++), coords);
@@ -2166,6 +3807,7 @@ namespace LabSharp
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((long)(*p++), coords);
@@ -2180,6 +3822,7 @@ namespace LabSharp
                     p = (ushort*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((long)(*p++), coords);
@@ -2194,6 +3837,7 @@ namespace LabSharp
                     p = (short*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((long)(*p++), coords);
@@ -2208,6 +3852,7 @@ namespace LabSharp
                     p = (uint*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((long)(*p++), coords);
@@ -2222,6 +3867,7 @@ namespace LabSharp
                     p = (int*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((long)(*p++), coords);
@@ -2236,6 +3882,7 @@ namespace LabSharp
                     p = (long*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -2244,8 +3891,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "long"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "long"));
+                }
             }
             
             return result;
@@ -2261,88 +3910,88 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return (float)(*p);
+                    return (float)(*pr);
                     
                 }
 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return (float)(*p);
+                    return (float)(*pr);
                     
                 }
 
                 case ClassID.UInt16 :
                 {
-                    ushort* p;
-                    p = (ushort*)array.RealElements;
+                    ushort* pr;
+                    pr = (ushort*)array.RealElements;                
                     
-                    return (float)(*p);
+                    return (float)(*pr);
                     
                 }
 
                 case ClassID.Int16 :
                 {
-                    short* p;
-                    p = (short*)array.RealElements;
+                    short* pr;
+                    pr = (short*)array.RealElements;                
                     
-                    return (float)(*p);
+                    return (float)(*pr);
                     
                 }
 
                 case ClassID.UInt32 :
                 {
-                    uint* p;
-                    p = (uint*)array.RealElements;
+                    uint* pr;
+                    pr = (uint*)array.RealElements;                
                     
-                    return (float)(*p);
+                    return (float)(*pr);
                     
                 }
 
                 case ClassID.Int32 :
                 {
-                    int* p;
-                    p = (int*)array.RealElements;
+                    int* pr;
+                    pr = (int*)array.RealElements;                
                     
-                    return (float)(*p);
+                    return (float)(*pr);
                     
                 }
 
                 case ClassID.UInt64 :
                 {
-                    ulong* p;
-                    p = (ulong*)array.RealElements;
+                    ulong* pr;
+                    pr = (ulong*)array.RealElements;                
                     
-                    return (float)(*p);
+                    return (float)(*pr);
                     
                 }
 
                 case ClassID.Int64 :
                 {
-                    long* p;
-                    p = (long*)array.RealElements;
+                    long* pr;
+                    pr = (long*)array.RealElements;                
                     
-                    return (float)(*p);
+                    return (float)(*pr);
                     
                 }
 
                 case ClassID.Single :
                 {
-                    float* p;
-                    p = (float*)array.RealElements;
+                    float* pr;
+                    pr = (float*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -2350,14 +3999,154 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "float"));
             }
         }
-        
+
+        public unsafe static Complex<float> _ToSingle_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(
+                        (float)(*pr),
+                        (float)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(
+                        (float)(*pr),
+                        (float)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(
+                        (float)(*pr),
+                        (float)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(
+                        (float)(*pr),
+                        (float)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(
+                        (float)(*pr),
+                        (float)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(
+                        (float)(*pr),
+                        (float)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt64 :
+                {
+                    ulong* pr, pi;
+                    pr = (ulong*)array.RealElements;
+                    pi = (ulong*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(
+                        (float)(*pr),
+                        (float)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int64 :
+                {
+                    long* pr, pi;
+                    pr = (long*)array.RealElements;
+                    pi = (long*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(
+                        (float)(*pr),
+                        (float)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Single :
+                {
+                    float* pr, pi;
+                    pr = (float*)array.RealElements;
+                    pi = (float*)array.ImaginaryElements;
+                    Complex<float> result;
+                    
+                    result = new Complex<float>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<float>"));
+            }
+        }
+
         public unsafe static float[] _ToSingleArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		float[] result = new float[count];
-        		
+                float[] result = new float[count];
+                
             switch(classId)
             {
                 
@@ -2490,19 +4279,213 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(float), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<float>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(
+                            (float)(*pr++),
+                            (float)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(
+                            (float)(*pr++),
+                            (float)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(
+                            (float)(*pr++),
+                            (float)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(
+                            (float)(*pr++),
+                            (float)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(
+                            (float)(*pr++),
+                            (float)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(
+                            (float)(*pr++),
+                            (float)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt64 :
+                {
+                    ulong* pr, pi;
+                    pr = (ulong*)array.RealElements;
+                    pi = (ulong*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(
+                            (float)(*pr++),
+                            (float)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int64 :
+                {
+                    long* pr, pi;
+                    pr = (long*)array.RealElements;
+                    pi = (long*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(
+                            (float)(*pr++),
+                            (float)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Single :
+                {
+                    float* pr, pi;
+                    pr = (float*)array.RealElements;
+                    pi = (float*)array.ImaginaryElements;
+                    Complex<float> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<float>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<float>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(float), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((float)(*p++), coords);
@@ -2517,6 +4500,7 @@ namespace LabSharp
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((float)(*p++), coords);
@@ -2531,6 +4515,7 @@ namespace LabSharp
                     p = (ushort*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((float)(*p++), coords);
@@ -2545,6 +4530,7 @@ namespace LabSharp
                     p = (short*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((float)(*p++), coords);
@@ -2559,6 +4545,7 @@ namespace LabSharp
                     p = (uint*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((float)(*p++), coords);
@@ -2573,6 +4560,7 @@ namespace LabSharp
                     p = (int*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((float)(*p++), coords);
@@ -2587,6 +4575,7 @@ namespace LabSharp
                     p = (ulong*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((float)(*p++), coords);
@@ -2601,6 +4590,7 @@ namespace LabSharp
                     p = (long*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((float)(*p++), coords);
@@ -2615,6 +4605,7 @@ namespace LabSharp
                     p = (float*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -2623,8 +4614,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "float"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "float"));
+                }
             }
             
             return result;
@@ -2640,97 +4633,97 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
                 case ClassID.UInt8 :
                 {
-                    byte* p;
-                    p = (byte*)array.RealElements;
+                    byte* pr;
+                    pr = (byte*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.Int8 :
                 {
-                    sbyte* p;
-                    p = (sbyte*)array.RealElements;
+                    sbyte* pr;
+                    pr = (sbyte*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.UInt16 :
                 {
-                    ushort* p;
-                    p = (ushort*)array.RealElements;
+                    ushort* pr;
+                    pr = (ushort*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.Int16 :
                 {
-                    short* p;
-                    p = (short*)array.RealElements;
+                    short* pr;
+                    pr = (short*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.UInt32 :
                 {
-                    uint* p;
-                    p = (uint*)array.RealElements;
+                    uint* pr;
+                    pr = (uint*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.Int32 :
                 {
-                    int* p;
-                    p = (int*)array.RealElements;
+                    int* pr;
+                    pr = (int*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.UInt64 :
                 {
-                    ulong* p;
-                    p = (ulong*)array.RealElements;
+                    ulong* pr;
+                    pr = (ulong*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.Int64 :
                 {
-                    long* p;
-                    p = (long*)array.RealElements;
+                    long* pr;
+                    pr = (long*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.Single :
                 {
-                    float* p;
-                    p = (float*)array.RealElements;
+                    float* pr;
+                    pr = (float*)array.RealElements;                
                     
-                    return (double)(*p);
+                    return (double)(*pr);
                     
                 }
 
                 case ClassID.Double :
                 {
-                    double* p;
-                    p = (double*)array.RealElements;
+                    double* pr;
+                    pr = (double*)array.RealElements;                
                     
-                    return *p;
+                    return *pr;
                     
                 }
 
@@ -2738,14 +4731,168 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "double"));
             }
         }
-        
+
+        public unsafe static Complex<double> _ToDouble_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.UInt64 :
+                {
+                    ulong* pr, pi;
+                    pr = (ulong*)array.RealElements;
+                    pi = (ulong*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Int64 :
+                {
+                    long* pr, pi;
+                    pr = (long*)array.RealElements;
+                    pi = (long*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Single :
+                {
+                    float* pr, pi;
+                    pr = (float*)array.RealElements;
+                    pi = (float*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(
+                        (double)(*pr),
+                        (double)(*pi));
+                    
+                    return result;
+                }
+
+                case ClassID.Double :
+                {
+                    double* pr, pi;
+                    pr = (double*)array.RealElements;
+                    pi = (double*)array.ImaginaryElements;
+                    Complex<double> result;
+                    
+                    result = new Complex<double>(*pr, *pi);
+                    
+                    return result;
+                }
+
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex<double>"));
+            }
+        }
+
         public unsafe static double[] _ToDoubleArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		double[] result = new double[count];
-        		
+                double[] result = new double[count];
+                
             switch(classId)
             {
                 
@@ -2891,19 +5038,233 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(double), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
-            {
                 
+            int[] coords;
+
+            if (array.IsComplex)
+            {
+                result = Array.CreateInstance(typeof(Complex<double>), dims);
+                switch(classId)
+                {
+                    
+                case ClassID.UInt8 :
+                {
+                    byte* pr, pi;
+                    pr = (byte*)array.RealElements;
+                    pi = (byte*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int8 :
+                {
+                    sbyte* pr, pi;
+                    pr = (sbyte*)array.RealElements;
+                    pi = (sbyte*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt16 :
+                {
+                    ushort* pr, pi;
+                    pr = (ushort*)array.RealElements;
+                    pi = (ushort*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int16 :
+                {
+                    short* pr, pi;
+                    pr = (short*)array.RealElements;
+                    pi = (short*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt32 :
+                {
+                    uint* pr, pi;
+                    pr = (uint*)array.RealElements;
+                    pi = (uint*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int32 :
+                {
+                    int* pr, pi;
+                    pr = (int*)array.RealElements;
+                    pi = (int*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.UInt64 :
+                {
+                    ulong* pr, pi;
+                    pr = (ulong*)array.RealElements;
+                    pi = (ulong*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Int64 :
+                {
+                    long* pr, pi;
+                    pr = (long*)array.RealElements;
+                    pi = (long*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Single :
+                {
+                    float* pr, pi;
+                    pr = (float*)array.RealElements;
+                    pi = (float*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(
+                            (double)(*pr++),
+                            (double)(*pi++));
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                case ClassID.Double :
+                {
+                    double* pr, pi;
+                    pr = (double*)array.RealElements;
+                    pi = (double*)array.ImaginaryElements;
+                    Complex<double> element;
+                    for(int i = 0 ; i < count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        
+                        element = new Complex<double>(*pr++, *pi++);
+                        
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex<double>"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(double), dims);
+                switch(classId)
+                {
+                    
                 case ClassID.UInt8 :
                 {
                     byte* p;
                     p = (byte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -2918,6 +5279,7 @@ namespace LabSharp
                     p = (sbyte*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -2932,6 +5294,7 @@ namespace LabSharp
                     p = (ushort*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -2946,6 +5309,7 @@ namespace LabSharp
                     p = (short*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -2960,6 +5324,7 @@ namespace LabSharp
                     p = (uint*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -2974,6 +5339,7 @@ namespace LabSharp
                     p = (int*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -2988,6 +5354,7 @@ namespace LabSharp
                     p = (ulong*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -3002,6 +5369,7 @@ namespace LabSharp
                     p = (long*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -3016,6 +5384,7 @@ namespace LabSharp
                     p = (float*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue((double)(*p++), coords);
@@ -3030,6 +5399,7 @@ namespace LabSharp
                     p = (double*)array.RealElements;
                     for(int i = 0 ; i < count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         
                         result.SetValue(*p++, coords);
@@ -3038,8 +5408,10 @@ namespace LabSharp
                     break;
                 }
 
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "double"));
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "double"));
+                }
             }
             
             return result;
