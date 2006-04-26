@@ -201,6 +201,7 @@ namespace LabSharp
                     p = (<xsl:value-of select="$from/@csharpType" />*)array.RealElements;
                     for(int i = 0 ; i &lt; count; i++)
                     {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
                         coords = MxUtils.CoordinatesFromIndex(i, dims);
                         <xsl:choose>
                         <xsl:when test="$from = $to">
