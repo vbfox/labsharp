@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<!-- vim: set et ts=4 sw=4: -->
+<!-- We use 2 languages and have to mix indent of both, in this case vim isn't so smart -->
+<!-- vim: set nosi ai indentexpr= et ts=4 sw=4: -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="text" encoding="UTF-8" indent="yes" />
 <xsl:preserve-space elements="*" />
@@ -42,7 +43,7 @@ namespace LabSharp
         /// &lt;summary&gt;
         /// Convert a mxArray to the corresponding type of array.
         /// &lt;/summary&gt;
-        /// &lt;/remarks&gt;
+        /// &lt;remarks&gt;
         /// No conversion of type occurs, if the ClassID is Single, a float[] will be
         /// returned and never a double[].
         /// &lt;/remarks&gt;
@@ -59,7 +60,7 @@ namespace LabSharp
         /// &lt;summary&gt;
         /// Convert a mxArray to the corresponding basic object (Not an array).
         /// &lt;/summary&gt;
-        /// &lt;/remarks&gt;
+        /// &lt;remarks&gt;
         /// No conversion of type occurs, if the ClassID is Single, a float will be
         /// returned and never a double.
         /// &lt;/remarks&gt;        
@@ -76,7 +77,7 @@ namespace LabSharp
         /// &lt;summary&gt;
         /// Try to convert a mxArray a specified .Net type.
         /// &lt;/summary&gt;
-        /// &lt;/remarks&gt;
+        /// &lt;remarks&gt;
         /// &lt;para&gt;
         ///     A conversion could occurs, if you ask for a double[,] but the content is
         ///     a 2 dimensions mxArray of Single it will be converted to a double[,].
@@ -93,6 +94,7 @@ namespace LabSharp
             // get dimensions, element type and other details; and the Array class that could contain
             // any array.
             bool isArray = genericType.IsArray;
+            bool isComplex = array.IsComplex;
             Type arrayElementType = genericType.GetElementType();
 
             <xsl:apply-templates select="Convert" mode="_ConvertToSomeType" />
@@ -116,19 +118,33 @@ namespace LabSharp
 
 <xsl:template match="Convert" mode="_ConvertToArray">
                 case ClassID.<xsl:value-of select="@matlabType" />:
-                    return _To<xsl:value-of select="@name" />Array(array);
+                    return _To<xsl:value-of select="@name" />Array(array);             
 </xsl:template>
 
 <xsl:template match="Convert" mode="_ConvertToBasicType">
                 case ClassID.<xsl:value-of select="@matlabType" />:
-                    return _To<xsl:value-of select="@name" />(array);
+                    if (array.IsComplex)
+                    {
+                        return _To<xsl:value-of select="@name" />_Cplx(array);
+                    }
+                    else
+                    {
+                        return _To<xsl:value-of select="@name" />(array);
+                    }
 </xsl:template>
 
 <xsl:template match="Convert" mode="_ConvertToSomeType">
     if (genericType == typeof(<xsl:value-of select="@csharpType" />))
     {
         // If the user want to convert to a single element
-        return (TType)(Object)_To<xsl:value-of select="@name" />(array);
+        if (isComplex)
+        {
+            return (TType)(Object)_To<xsl:value-of select="@name" />_Cplx(array);
+        }
+        else
+        {
+            return (TType)(Object)_To<xsl:value-of select="@name" />(array);
+        }
     }
     else if(arrayElementType == typeof(<xsl:value-of select="@csharpType" />))
     {
@@ -157,16 +173,39 @@ namespace LabSharp
 <xsl:param name="to" /><!-- Node du type pour le return -->
                 case ClassID.<xsl:value-of select="$from/@matlabType" /> :
                 {
-                    <xsl:value-of select="$from/@csharpType" />* p;
-                    p = (<xsl:value-of select="$from/@csharpType" />*)array.RealElements;
+                    <xsl:value-of select="$from/@csharpType" />* pr;
+                    pr = (<xsl:value-of select="$from/@csharpType" />*)array.RealElements;                
                     <xsl:choose>
                     <xsl:when test="$from = $to">
-                    return *p;
+                    return *pr;
                     </xsl:when>
                     <xsl:otherwise>
-                    return (<xsl:value-of select="$to/@csharpType" />)(*p);
+                    return (<xsl:value-of select="$to/@csharpType" />)(*pr);
                     </xsl:otherwise>
                     </xsl:choose>
+                }
+</xsl:template>
+
+<xsl:template name="case-convert-to-cplx">
+<xsl:param name="from" /><!-- Node du type contenu dans le mxArray -->
+<xsl:param name="to" /><!-- Node du type pour le return -->
+                case ClassID.<xsl:value-of select="$from/@matlabType" /> :
+                {
+                    <xsl:value-of select="$from/@csharpType" />* pr, pi;
+                    pr = (<xsl:value-of select="$from/@csharpType" />*)array.RealElements;
+                    pi = (<xsl:value-of select="$from/@csharpType" />*)array.ImaginaryElements;
+                    Complex&lt;<xsl:value-of select="$to/@csharpType" />&gt; result;
+                    <xsl:choose>
+                    <xsl:when test="$from = $to">
+                    result = new Complex&lt;<xsl:value-of select="$to/@csharpType" />&gt;(*pr, *pi);
+                    </xsl:when>
+                    <xsl:otherwise>
+                    result = new Complex&lt;<xsl:value-of select="$to/@csharpType" />&gt;(
+                        (<xsl:value-of select="$to/@csharpType" />)(*pr),
+                        (<xsl:value-of select="$to/@csharpType" />)(*pi));
+                    </xsl:otherwise>
+                    </xsl:choose>
+                    return result;
                 }
 </xsl:template>
 
@@ -216,6 +255,35 @@ namespace LabSharp
                 }
 </xsl:template>
 
+<xsl:template name="case-convert-to-array-cplx">
+<xsl:param name="from" /><!-- Node du type contenu dans le mxArray -->
+<xsl:param name="to" /><!-- Node du type pour le return -->
+                case ClassID.<xsl:value-of select="$from/@matlabType" /> :
+                {
+                    <xsl:value-of select="$from/@csharpType" />* pr, pi;
+                    pr = (<xsl:value-of select="$from/@csharpType" />*)array.RealElements;
+                    pi = (<xsl:value-of select="$from/@csharpType" />*)array.ImaginaryElements;
+                    Complex&lt;<xsl:value-of select="$to/@csharpType" />&gt; element;
+                    for(int i = 0 ; i &lt; count; i++)
+                    {
+                        //TODO: Optimize the coordinate table generation by not re-calculating it every time.
+                        coords = MxUtils.CoordinatesFromIndex(i, dims);
+                        <xsl:choose>
+                        <xsl:when test="$from = $to">
+                        element = new Complex&lt;<xsl:value-of select="$to/@csharpType" />&gt;(*pr++, *pi++);
+                        </xsl:when>
+                        <xsl:otherwise>
+                        element = new Complex&lt;<xsl:value-of select="$to/@csharpType" />&gt;(
+                            (<xsl:value-of select="$to/@csharpType" />)(*pr++),
+                            (<xsl:value-of select="$to/@csharpType" />)(*pi++));
+                        </xsl:otherwise>
+                        </xsl:choose>
+                        result.SetValue(element, coords);
+                    }
+                    break;
+                }
+</xsl:template>
+
 <xsl:template match="Convert" mode="ConvertToFunctions">
         #region Convert to <xsl:value-of select="@name" />
         
@@ -225,15 +293,15 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-        		
+            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 <xsl:for-each select="CastFrom">
-                <xsl:variable name="currentMatlabType" select="@matlabType" />
-                <xsl:call-template name="case-convert-to">
-                    <xsl:with-param name="to" select=".." />
-                    <xsl:with-param name="from" select="/MxConvert/Convert[@matlabType=$currentMatlabType]" />
-                </xsl:call-template>
+                    <xsl:variable name="currentMatlabType" select="@matlabType" />
+                    <xsl:call-template name="case-convert-to">
+                        <xsl:with-param name="to" select=".." />
+                        <xsl:with-param name="from" select="/MxConvert/Convert[@matlabType=$currentMatlabType]" />
+                    </xsl:call-template>
                 </xsl:for-each>
                 <xsl:call-template name="case-convert-to">
                     <xsl:with-param name="to" select="self::*" />
@@ -243,14 +311,40 @@ namespace LabSharp
                     throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "<xsl:value-of select="@csharpType" />"));
             }
         }
-        
+
+        public unsafe static Complex&lt;<xsl:value-of select="@csharpType" />&gt; _To<xsl:value-of select="@name" />_Cplx(MxArray array)
+        {
+            if (array == null) throw new ArgumentNullException("array");
+            if (array.NumberOfElements != 1)
+                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+            ClassID classId = array.Class;
+            bool isComplex = array.IsComplex;   
+            switch(classId)
+            {
+                <xsl:for-each select="CastFrom">
+                    <xsl:variable name="currentMatlabType" select="@matlabType" />
+                    <xsl:call-template name="case-convert-to-cplx">
+                        <xsl:with-param name="to" select=".." />
+                        <xsl:with-param name="from" select="/MxConvert/Convert[@matlabType=$currentMatlabType]" />
+                    </xsl:call-template>
+                </xsl:for-each>
+                <xsl:call-template name="case-convert-to-cplx">
+                    <xsl:with-param name="to" select="self::*" />
+                    <xsl:with-param name="from" select="self::*" />
+                </xsl:call-template>
+                default:
+                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                        "Complex&lt;<xsl:value-of select="@csharpType" />&gt;"));
+            }
+        }
+
         public unsafe static <xsl:value-of select="@csharpType" />[] _To<xsl:value-of select="@name" />Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             ClassID classId = array.Class;
-        		<xsl:value-of select="@csharpType" />[] result = new <xsl:value-of select="@csharpType" />[count];
-        		
+                <xsl:value-of select="@csharpType" />[] result = new <xsl:value-of select="@csharpType" />[count];
+                
             switch(classId)
             {
                 <xsl:for-each select="CastFrom">
@@ -276,25 +370,52 @@ namespace LabSharp
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
             int[] dims = array.Dimensions;
-            Array result = Array.CreateInstance(typeof(<xsl:value-of select="@csharpType" />), dims);
+            Array result;
             ClassID classId = array.Class;
-        		
-        		int[] coords;
-            switch(classId)
+                
+            int[] coords;
+
+            if (array.IsComplex)
             {
-                <xsl:for-each select="CastFrom">
-                <xsl:variable name="currentMatlabType" select="@matlabType" />
-                <xsl:call-template name="case-convert-to-array">
-                    <xsl:with-param name="to" select=".." />
-                    <xsl:with-param name="from" select="/MxConvert/Convert[@matlabType=$currentMatlabType]" />
-                </xsl:call-template>
-                </xsl:for-each>
-                <xsl:call-template name="case-convert-to-array">
-                    <xsl:with-param name="to" select="self::*" />
-                    <xsl:with-param name="from" select="self::*" />
-                </xsl:call-template>
-                default:
-                    throw new Exception(string.Format(NO_WAY_TO_CAST, classId, "<xsl:value-of select="@csharpType" />"));
+                result = Array.CreateInstance(typeof(Complex&lt;<xsl:value-of select="@csharpType" />&gt;), dims);
+                switch(classId)
+                {
+                    <xsl:for-each select="CastFrom">
+                    <xsl:variable name="currentMatlabType" select="@matlabType" />
+                    <xsl:call-template name="case-convert-to-array-cplx">
+                        <xsl:with-param name="to" select=".." />
+                        <xsl:with-param name="from" select="/MxConvert/Convert[@matlabType=$currentMatlabType]" />
+                    </xsl:call-template>
+                    </xsl:for-each>
+                    <xsl:call-template name="case-convert-to-array-cplx">
+                        <xsl:with-param name="to" select="self::*" />
+                        <xsl:with-param name="from" select="self::*" />
+                    </xsl:call-template>
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "Complex&lt;<xsl:value-of select="@csharpType" />&gt;"));
+                }                
+            }
+            else
+            {
+                result = Array.CreateInstance(typeof(<xsl:value-of select="@csharpType" />), dims);
+                switch(classId)
+                {
+                    <xsl:for-each select="CastFrom">
+                    <xsl:variable name="currentMatlabType" select="@matlabType" />
+                    <xsl:call-template name="case-convert-to-array">
+                        <xsl:with-param name="to" select=".." />
+                        <xsl:with-param name="from" select="/MxConvert/Convert[@matlabType=$currentMatlabType]" />
+                    </xsl:call-template>
+                    </xsl:for-each>
+                    <xsl:call-template name="case-convert-to-array">
+                        <xsl:with-param name="to" select="self::*" />
+                        <xsl:with-param name="from" select="self::*" />
+                    </xsl:call-template>
+                    default:
+                        throw new Exception(string.Format(NO_WAY_TO_CAST, classId,
+                            "<xsl:value-of select="@csharpType" />"));
+                }
             }
             
             return result;

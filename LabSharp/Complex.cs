@@ -22,7 +22,7 @@ namespace LabSharp
             set { m_imaginaryPart = value; }
         }
 
-        Complex(T realPart, T imaginaryPart)
+        public Complex(T realPart, T imaginaryPart)
         {
             m_realPart = realPart;
             m_imaginaryPart = imaginaryPart;

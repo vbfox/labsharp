@@ -79,7 +79,7 @@ namespace LabSharp
             // There is two sorts of Array types : the ones that answer true to IsArray, where we could
             // get dimensions, element type and other details; and the Array class that could contain
             // any array.
-            bool isArray = genericType.IsArray;
+            //bool isArray = genericType.IsArray;
             bool isArrayClass = genericType == typeof(Array);
             bool isObjectClass = genericType == typeof(Object);
             bool isStringClass = genericType == typeof(String);
@@ -95,6 +95,7 @@ namespace LabSharp
             }
             else if (isObjectClass)
             {
+                // Try to find the C# type that match the mxArray
                 if (classId == ClassID.Char)
                 {
                     return (TType)(Object)ToString(array);
@@ -110,6 +111,7 @@ namespace LabSharp
             }
             else
             {
+                // Try to convert the mxArray to the specified C# type
                 return _ConvertToSomeType<TType>(array, classId, ndims, noVectorization);
             }
         }
