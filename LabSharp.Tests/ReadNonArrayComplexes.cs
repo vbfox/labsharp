@@ -42,30 +42,12 @@ namespace LabSharp.Tests
         }
 
         [Test]
-        public void ReadComplexImplicitFromReal()
-        {
-            m_eng.Eval("cplx = 3.5");
-            Complex<double> cplx = (Complex<double>)m_eng.GetVariable<Object>("cplx");
-            Assert.AreEqual(cplx.RealPart, 3.5, "Real part");
-            Assert.AreEqual(cplx.ImaginaryPart, 0, "Imaginary part");
-        }
-
-        [Test]
         public void ReadComplexArrayType()
         {
             m_eng.Eval("cplx = 3.5 + 2.6 * i");
             Complex<double>[,] cplx = (Complex<double>[,])m_eng.GetVariable<Array>("cplx");
             Assert.AreEqual(cplx[0, 0].RealPart, 3.5, "Real part");
             Assert.AreEqual(cplx[0, 0].ImaginaryPart, 2.6, "Imaginary part");
-        }
-
-        [Test]
-        public void ReadComplexArrayTypeFromReal()
-        {
-            m_eng.Eval("cplx = 3.5");
-            Complex<double>[,] cplx = (Complex<double>[,])m_eng.GetVariable<Array>("cplx");
-            Assert.AreEqual(cplx[0, 0].RealPart, 3.5, "Real part");
-            Assert.AreEqual(cplx[0, 0].ImaginaryPart, 0, "Imaginary part");
         }
 
         [Test]
