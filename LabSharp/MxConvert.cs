@@ -47,24 +47,6 @@ namespace LabSharp
             return array.StringValue;
         }
 
-        static object ConvertToDotNetType(MxArray array)
-        {
-            ClassID classId = array.Class;
-            int ndims = array.NumberOfDimensions;
-
-            Object result = null;            
-            switch (classId)
-            {
-                case ClassID.Char:
-                    result = ToString(array);
-                    break;
-                default:
-                    result = _ToDotNetType(array, classId, ndims);
-                    break;
-            }
-            return result;
-        }
-
         public static TType FromMxArray<TType>(MxArray array)
         {
             return FromMxArray<TType>(array, false);
