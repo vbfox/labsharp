@@ -117,16 +117,6 @@ namespace LabSharp
         }
 
         <xsl:apply-templates select="Convert" mode="ConvertToFunctions" />
-
-        static Object _ToDotNetType(MxArray array, ClassID classId, int ndims)
-        {
-             Object result = null;
-             switch(classId)
-             {
-                 <xsl:apply-templates select="Convert" mode="ToDotNetType" />
-             }
-             return result;
-        }       
     }
 }
 </xsl:template>
@@ -540,19 +530,6 @@ namespace LabSharp
         }
 
         #endregion
-</xsl:template>
-
-<xsl:template match="Convert" mode="ToDotNetType">
-                 case ClassID.<xsl:value-of select="@matlabType" /> :
-                     if (ndims == 1)
-                     {
-                         result = _To<xsl:value-of select="@name" />(array);
-                     }
-                     else
-                     {
-                         result = _To<xsl:value-of select="@name" />Array(array);
-                     }
-                     break;
 </xsl:template>
 
 </xsl:stylesheet>
