@@ -8,6 +8,11 @@ namespace LabSharp
     {
         T m_realPart;
 
+        public static implicit operator Complex<T>(T value)
+        {
+            return new Complex<T>(value, default(T));
+        }
+
         public T RealPart
         {
             get { return m_realPart; }
