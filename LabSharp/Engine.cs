@@ -116,6 +116,8 @@ namespace LabSharp
             OutputToBuffer(IntPtr.Zero, 0);
         }
 
+        #region Get/Set MxArray
+
         public void SetVariable(string var_name, MxArray array)
         {
             CheckPointer();
@@ -138,6 +140,10 @@ namespace LabSharp
                 return new MxArray(var_ptr);
             }
         }
+
+        #endregion
+
+        #region GetVariable<TType>
 
         public TType GetVariable<TType>(string var_name)
         {
@@ -169,6 +175,8 @@ namespace LabSharp
                 return defaultValue;
             }
         }
+
+        #endregion
 
         #region IDisposable Members
 
