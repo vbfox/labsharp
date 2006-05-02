@@ -118,6 +118,22 @@ namespace LabSharp.Tests
             Assert.AreEqual(cplx[1, 0].ImaginaryPart, 0, "[1,0] Imaginary part");
             Assert.AreEqual(cplx[1, 1].RealPart, 7, "[1,0] Real part");
             Assert.AreEqual(cplx[1, 1].ImaginaryPart, 0, "[1,0] Imaginary part");
-        }        
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidCastException))]
+        public void ReadComplexBadType()
+        {
+            m_eng.Eval("cplx = 'hello world'");
+            m_eng.GetVariable<Complex<double>[]>("cplx");
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidCastException))]
+        public void ReadComplexBadType2()
+        {
+            m_eng.Eval("cplx = 5+6*i");
+            m_eng.GetVariable<Complex<DateTime>[]>("cplx");
+        }
     }
 }
