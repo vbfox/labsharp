@@ -43,10 +43,81 @@ namespace LabSharp
             bool isArray;
             bool isComplexType;
 			ExtractTypeInfos(genericType, out convertFromDataType, out isArray, out isComplexType);
+            
+            <xsl:apply-templates select="Convert" mode="if-on-type" />
+                throw new Exception("Boom!");
+        }
 
-			return null;
-		}
+        <xsl:apply-templates select="Convert" mode="mxarray-from-functions" />
+
 	}
 }
 </xsl:template>
+
+<xsl:template match="Convert" mode="if-on-type">
+            if (convertFromDataType == typeof(<xsl:value-of select="@csharpType" />))
+            {
+                if (isArray)
+                {
+                    /*
+                    if (isComplexType)
+                    {
+                         return _MxArrayFrom<xsl:value-of select="@name" />Array_Cplx(
+                            (Array)(Object)value);
+                    }
+                    else
+                    {
+                         return _MxArrayFrom<xsl:value-of select="@name" />Array(
+                            (Array)(Object)value);
+                    }
+                    */
+                    return null; // TODO
+                }
+                else
+                {
+                    if (isComplexType)
+                    {
+                        return _MxArrayFrom<xsl:value-of select="@name" />_Cplx(
+                            (Complex&lt;<xsl:value-of select="@csharpType" />&gt;)(Object)value);
+                    }
+                    else
+                    {
+                        return _MxArrayFrom<xsl:value-of select="@name" />(
+                            (<xsl:value-of select="@csharpType" />)(Object)value);
+                    }            
+                }
+            }
+            else
+</xsl:template>
+
+<xsl:template match="Convert" mode="mxarray-from-functions">
+        unsafe static MxArray _MxArrayFrom<xsl:value-of select="@name" />(
+            <xsl:value-of select="@csharpType" /> value)
+        {
+            MxArray result = MxArray.CreateNumericArray(1, new int[] { 1 },
+                ClassID.<xsl:value-of select="@matlabType" />, Complexity.Real);
+            <xsl:value-of select="@csharpType" />* pr;
+            pr = (<xsl:value-of select="@csharpType" />*)result.RealElements;
+            *pr = value;
+
+            return result;
+        }
+
+        unsafe static MxArray _MxArrayFrom<xsl:value-of select="@name" />_Cplx(
+            Complex&lt;<xsl:value-of select="@csharpType" />&gt; value)
+        {
+            MxArray result = MxArray.CreateNumericArray(1, new int[] { 1 },
+                ClassID.<xsl:value-of select="@matlabType" />, Complexity.Complex);
+            <xsl:value-of select="@csharpType" />* pr, pi;
+
+            pr = (<xsl:value-of select="@csharpType" />*)result.RealElements;
+            pi = (<xsl:value-of select="@csharpType" />*)result.ImaginaryElements;
+
+            *pr = value.RealPart;
+            *pi = value.ImaginaryPart;
+
+            return result;
+        }        
+</xsl:template>
+
 </xsl:stylesheet>
