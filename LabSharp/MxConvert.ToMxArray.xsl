@@ -36,7 +36,16 @@ namespace LabSharp
 {
     public static partial class MxConvert
 	{
-		// TODO
+		static MxArray _ToMxArray&lt;TType&gt;(TType value)
+		{
+			Type genericType = typeof(TType);
+            Type convertFromDataType;
+            bool isArray;
+            bool isComplexType;
+			ExtractTypeInfos(genericType, out convertFromDataType, out isArray, out isComplexType);
+
+			return null;
+		}
 	}
 }
 </xsl:template>

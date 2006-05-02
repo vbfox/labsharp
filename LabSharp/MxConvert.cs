@@ -53,7 +53,7 @@ namespace LabSharp
             {
                 return MxArray.CreateString((string)(Object)value);
             }
-            return null;
+            return _ToMxArray<TType>(value);
         }
 
         public static TType FromMxArray<TType>(MxArray array)
@@ -105,6 +105,26 @@ namespace LabSharp
                 // Try to convert the mxArray to the specified C# type
                 return _ConvertToSomeType<TType>(array, classId, ndims, noVectorization);
             }
+        }
+
+        static void ExtractTypeInfos(Type type, out Type insideType, out bool isArray,
+            out bool isComplex)
+        {
+            isArray = type.IsArray;
+            if (isArray)
+            {
+                insideType = type.GetElementType();
+            }
+            else
+            {
+                insideType = type;
+            }
+            isComplex = insideType.IsGenericType
+                && (insideType.GetGenericTypeDefinition() == typeof(Complex<>));
+            if (isComplex)
+            {
+                insideType = insideType.GetGenericArguments()[0];
+			}
         }
     }
 }
