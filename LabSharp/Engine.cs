@@ -143,6 +143,18 @@ namespace LabSharp
 
         #endregion
 
+        #region SetVariable<TType>
+        
+        public void SetVariable<TType>(string var_name, TType value)
+        {
+           using (MxArray array = MxConvert.ToMxArray<TType>(value))
+           {
+               SetVariable(var_name, array);
+           }
+        }
+
+        #endregion
+
         #region GetVariable<TType>
 
         public TType GetVariable<TType>(string var_name)

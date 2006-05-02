@@ -47,6 +47,15 @@ namespace LabSharp
             return array.StringValue;
         }
 
+        public static MxArray ToMxArray<TType>(TType value)
+        {
+            if (typeof(TType) == typeof(string))
+            {
+                return MxArray.CreateString((string)(Object)value);
+            }
+            return null;
+        }
+
         public static TType FromMxArray<TType>(MxArray array)
         {
             return FromMxArray<TType>(array, false);
@@ -96,16 +105,6 @@ namespace LabSharp
                 // Try to convert the mxArray to the specified C# type
                 return _ConvertToSomeType<TType>(array, classId, ndims, noVectorization);
             }
-        }
-
-        private static T1 _ConvertTo<T1>(MxArray array, ClassID classId, int ndims)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public static MxArray ToMxArray(Object obj)
-        {
-            return null;
         }
     }
 }

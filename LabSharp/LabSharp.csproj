@@ -43,12 +43,11 @@
     <Compile Include="MxArray.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MxConvert.Generated.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Complex.cs" />
     <Compile Include="MxArray.IsClass.cs" />
     <Compile Include="MxArray.Struct.cs" />
+    <Compile Include="MxConvert.FromMxArray.cs" />
+    <Compile Include="MxConvert.ToMxArray.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LabSharp.NativeFunctions\LabSharp.NativeFunctions.csproj">

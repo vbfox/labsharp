@@ -1013,7 +1013,7 @@ namespace LabSharp
         
         #region Convert to Char
         
-        public unsafe static char _ToChar(MxArray array)
+        unsafe static char _ToChar(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1037,7 +1037,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<char> _ToChar_Cplx(MxArray array)
+        unsafe static Complex<char> _ToChar_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1069,7 +1069,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static char[] _ToCharArray1D(MxArray array)
+        unsafe static char[] _ToCharArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1099,7 +1099,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<char>[] _ToCharArray1D_Cplx(MxArray array)
+        unsafe static Complex<char>[] _ToCharArray1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1136,7 +1136,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToCharArray(MxArray array)
+        unsafe static Array _ToCharArray(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1173,7 +1173,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToCharArray_Cplx(MxArray array)
+        unsafe static Array _ToCharArray_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1221,7 +1221,7 @@ namespace LabSharp
 
         #region Convert to Boolean
         
-        public unsafe static bool _ToBoolean(MxArray array)
+        unsafe static bool _ToBoolean(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1245,7 +1245,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<bool> _ToBoolean_Cplx(MxArray array)
+        unsafe static Complex<bool> _ToBoolean_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1277,7 +1277,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static bool[] _ToBooleanArray1D(MxArray array)
+        unsafe static bool[] _ToBooleanArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1307,7 +1307,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<bool>[] _ToBooleanArray1D_Cplx(MxArray array)
+        unsafe static Complex<bool>[] _ToBooleanArray1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1344,7 +1344,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToBooleanArray(MxArray array)
+        unsafe static Array _ToBooleanArray(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1381,7 +1381,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToBooleanArray_Cplx(MxArray array)
+        unsafe static Array _ToBooleanArray_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1429,7 +1429,7 @@ namespace LabSharp
 
         #region Convert to SByte
         
-        public unsafe static sbyte _ToSByte(MxArray array)
+        unsafe static sbyte _ToSByte(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1453,7 +1453,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<sbyte> _ToSByte_Cplx(MxArray array)
+        unsafe static Complex<sbyte> _ToSByte_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1485,7 +1485,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static sbyte[] _ToSByteArray1D(MxArray array)
+        unsafe static sbyte[] _ToSByteArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1515,7 +1515,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<sbyte>[] _ToSByteArray1D_Cplx(MxArray array)
+        unsafe static Complex<sbyte>[] _ToSByteArray1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1552,7 +1552,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToSByteArray(MxArray array)
+        unsafe static Array _ToSByteArray(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1589,7 +1589,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToSByteArray_Cplx(MxArray array)
+        unsafe static Array _ToSByteArray_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1637,7 +1637,7 @@ namespace LabSharp
 
         #region Convert to Byte
         
-        public unsafe static byte _ToByte(MxArray array)
+        unsafe static byte _ToByte(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1661,7 +1661,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<byte> _ToByte_Cplx(MxArray array)
+        unsafe static Complex<byte> _ToByte_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1693,7 +1693,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static byte[] _ToByteArray1D(MxArray array)
+        unsafe static byte[] _ToByteArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1723,7 +1723,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<byte>[] _ToByteArray1D_Cplx(MxArray array)
+        unsafe static Complex<byte>[] _ToByteArray1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1760,7 +1760,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToByteArray(MxArray array)
+        unsafe static Array _ToByteArray(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1797,7 +1797,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToByteArray_Cplx(MxArray array)
+        unsafe static Array _ToByteArray_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -1845,7 +1845,7 @@ namespace LabSharp
 
         #region Convert to UInt16
         
-        public unsafe static ushort _ToUInt16(MxArray array)
+        unsafe static ushort _ToUInt16(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1887,7 +1887,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<ushort> _ToUInt16_Cplx(MxArray array)
+        unsafe static Complex<ushort> _ToUInt16_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -1953,7 +1953,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static ushort[] _ToUInt16Array1D(MxArray array)
+        unsafe static ushort[] _ToUInt16Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2009,7 +2009,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<ushort>[] _ToUInt16Array1D_Cplx(MxArray array)
+        unsafe static Complex<ushort>[] _ToUInt16Array1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2086,7 +2086,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToUInt16Array(MxArray array)
+        unsafe static Array _ToUInt16Array(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2153,7 +2153,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToUInt16Array_Cplx(MxArray array)
+        unsafe static Array _ToUInt16Array_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2247,7 +2247,7 @@ namespace LabSharp
 
         #region Convert to Int16
         
-        public unsafe static short _ToInt16(MxArray array)
+        unsafe static short _ToInt16(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -2289,7 +2289,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<short> _ToInt16_Cplx(MxArray array)
+        unsafe static Complex<short> _ToInt16_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -2355,7 +2355,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static short[] _ToInt16Array1D(MxArray array)
+        unsafe static short[] _ToInt16Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2411,7 +2411,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<short>[] _ToInt16Array1D_Cplx(MxArray array)
+        unsafe static Complex<short>[] _ToInt16Array1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2488,7 +2488,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToInt16Array(MxArray array)
+        unsafe static Array _ToInt16Array(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2555,7 +2555,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToInt16Array_Cplx(MxArray array)
+        unsafe static Array _ToInt16Array_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2649,7 +2649,7 @@ namespace LabSharp
 
         #region Convert to UInt32
         
-        public unsafe static uint _ToUInt32(MxArray array)
+        unsafe static uint _ToUInt32(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -2709,7 +2709,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<uint> _ToUInt32_Cplx(MxArray array)
+        unsafe static Complex<uint> _ToUInt32_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -2809,7 +2809,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static uint[] _ToUInt32Array1D(MxArray array)
+        unsafe static uint[] _ToUInt32Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -2891,7 +2891,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<uint>[] _ToUInt32Array1D_Cplx(MxArray array)
+        unsafe static Complex<uint>[] _ToUInt32Array1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -3008,7 +3008,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToUInt32Array(MxArray array)
+        unsafe static Array _ToUInt32Array(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -3105,7 +3105,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToUInt32Array_Cplx(MxArray array)
+        unsafe static Array _ToUInt32Array_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -3245,7 +3245,7 @@ namespace LabSharp
 
         #region Convert to Int32
         
-        public unsafe static int _ToInt32(MxArray array)
+        unsafe static int _ToInt32(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -3305,7 +3305,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<int> _ToInt32_Cplx(MxArray array)
+        unsafe static Complex<int> _ToInt32_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -3405,7 +3405,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static int[] _ToInt32Array1D(MxArray array)
+        unsafe static int[] _ToInt32Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -3487,7 +3487,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<int>[] _ToInt32Array1D_Cplx(MxArray array)
+        unsafe static Complex<int>[] _ToInt32Array1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -3604,7 +3604,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToInt32Array(MxArray array)
+        unsafe static Array _ToInt32Array(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -3701,7 +3701,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToInt32Array_Cplx(MxArray array)
+        unsafe static Array _ToInt32Array_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -3841,7 +3841,7 @@ namespace LabSharp
 
         #region Convert to UInt64
         
-        public unsafe static ulong _ToUInt64(MxArray array)
+        unsafe static ulong _ToUInt64(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -3919,7 +3919,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<ulong> _ToUInt64_Cplx(MxArray array)
+        unsafe static Complex<ulong> _ToUInt64_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -4053,7 +4053,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static ulong[] _ToUInt64Array1D(MxArray array)
+        unsafe static ulong[] _ToUInt64Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -4161,7 +4161,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<ulong>[] _ToUInt64Array1D_Cplx(MxArray array)
+        unsafe static Complex<ulong>[] _ToUInt64Array1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -4318,7 +4318,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToUInt64Array(MxArray array)
+        unsafe static Array _ToUInt64Array(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -4445,7 +4445,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToUInt64Array_Cplx(MxArray array)
+        unsafe static Array _ToUInt64Array_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -4631,7 +4631,7 @@ namespace LabSharp
 
         #region Convert to Int64
         
-        public unsafe static long _ToInt64(MxArray array)
+        unsafe static long _ToInt64(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -4709,7 +4709,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<long> _ToInt64_Cplx(MxArray array)
+        unsafe static Complex<long> _ToInt64_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -4843,7 +4843,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static long[] _ToInt64Array1D(MxArray array)
+        unsafe static long[] _ToInt64Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -4951,7 +4951,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<long>[] _ToInt64Array1D_Cplx(MxArray array)
+        unsafe static Complex<long>[] _ToInt64Array1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -5108,7 +5108,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToInt64Array(MxArray array)
+        unsafe static Array _ToInt64Array(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -5235,7 +5235,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToInt64Array_Cplx(MxArray array)
+        unsafe static Array _ToInt64Array_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -5421,7 +5421,7 @@ namespace LabSharp
 
         #region Convert to Single
         
-        public unsafe static float _ToSingle(MxArray array)
+        unsafe static float _ToSingle(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -5517,7 +5517,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<float> _ToSingle_Cplx(MxArray array)
+        unsafe static Complex<float> _ToSingle_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -5685,7 +5685,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static float[] _ToSingleArray1D(MxArray array)
+        unsafe static float[] _ToSingleArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -5819,7 +5819,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<float>[] _ToSingleArray1D_Cplx(MxArray array)
+        unsafe static Complex<float>[] _ToSingleArray1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -6016,7 +6016,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToSingleArray(MxArray array)
+        unsafe static Array _ToSingleArray(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -6173,7 +6173,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToSingleArray_Cplx(MxArray array)
+        unsafe static Array _ToSingleArray_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -6405,7 +6405,7 @@ namespace LabSharp
 
         #region Convert to Double
         
-        public unsafe static double _ToDouble(MxArray array)
+        unsafe static double _ToDouble(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -6510,7 +6510,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex<double> _ToDouble_Cplx(MxArray array)
+        unsafe static Complex<double> _ToDouble_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -6695,7 +6695,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static double[] _ToDoubleArray1D(MxArray array)
+        unsafe static double[] _ToDoubleArray1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -6842,7 +6842,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex<double>[] _ToDoubleArray1D_Cplx(MxArray array)
+        unsafe static Complex<double>[] _ToDoubleArray1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -7059,7 +7059,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToDoubleArray(MxArray array)
+        unsafe static Array _ToDoubleArray(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -7231,7 +7231,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _ToDoubleArray_Cplx(MxArray array)
+        unsafe static Array _ToDoubleArray_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
