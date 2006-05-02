@@ -92,25 +92,9 @@ namespace LabSharp
         {
             Type genericType = typeof(TType);
             Type convertToDataType;
-            // There is two sorts of Array types : the ones that answer true to IsArray, where we could
-            // get dimensions, element type and other details; and the Array class that could contain
-            // any array.
-            bool isArray = genericType.IsArray;
-            bool isComplexMxArray = array.IsComplex;
-            if (isArray)
-            {
-                convertToDataType =genericType.GetElementType();
-            }
-            else
-            {
-                convertToDataType = genericType;
-            }
-            bool isComplexType = convertToDataType.IsGenericType
-                &amp;&amp; (convertToDataType.GetGenericTypeDefinition() == typeof(Complex&lt;&gt;));
-            if (isComplexType)
-            {
-                convertToDataType = convertToDataType.GetGenericArguments()[0];
-            }
+            bool isArray;
+            bool isComplexType;
+            ExtractTypeInfos(genericType, out convertToDataType, out isArray, out isComplexType);
 
             <xsl:apply-templates select="Convert" mode="_ConvertToSomeType" />
                 throw new InvalidCastException(string.Format(NO_WAY_TO_CAST, classId, typeof(TType).Name));
