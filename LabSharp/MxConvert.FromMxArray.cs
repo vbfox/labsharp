@@ -32,7 +32,7 @@ namespace LabSharp
     {
         const string ONE_ELEMENT_REQUIRED = "A mxArray with only 1 element is required.";
         const string NO_WAY_TO_CAST = "Cannot cast a {0} mxArray to {1}.";
-        const string NO_DOTNET_TYPE = "No corresponding .Net type exists for {0}.";
+        const string NO_DOTNET_TYPE = "No corresponding .Net type exists for matlab's {0}.";
 
         /// <summary>
         /// Convert a mxArray to the corresponding type of array.
