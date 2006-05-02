@@ -1,13 +1,19 @@
-var xml = WScript.CreateObject("Microsoft.XMLDOM");          //input
-xml.validateOnParse=false;
+var xml = WScript.CreateObject("Microsoft.XMLDOM");
+xml.validateOnParse  =false;
 xml.load("MxConvert.xml");
 
-var xsl = WScript.CreateObject("Microsoft.XMLDOM");          //style
-xsl.validateOnParse=false;
-xsl.load("MxConvert.xsl");
+var xslFrom = WScript.CreateObject("Microsoft.XMLDOM");
+xslFrom.validateOnParse = false;
+xslFrom.load("MxConvert.FromMxArray.xsl");
 
-var out = WScript.CreateObject("Scripting.FileSystemObject"); //output
-var replace = true; var unicode = false; //output file properties
-var hdl = out.CreateTextFile("MxConvert.Generated.cs", replace, unicode )
+var xslTo = WScript.CreateObject("Microsoft.XMLDOM");
+xslTo.validateOnParse=false;
+xslTo.load("MxConvert.ToMxArray.xsl");
 
-hdl.write( xml.transformNode( xsl.documentElement ));
+var fso = WScript.CreateObject("Scripting.FileSystemObject");
+
+var outputFrom = fso.CreateTextFile("MxConvert.FromMxArray.cs", true, false );
+var outputTo = fso.CreateTextFile("MxConvert.ToMxArray.cs", true, false );
+
+outputFrom.write( xml.transformNode( xslFrom.documentElement ));
+outputTo.write( xml.transformNode( xslTo.documentElement ));

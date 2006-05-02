@@ -359,7 +359,7 @@ namespace LabSharp
 <xsl:template match="Convert" mode="ConvertToFunctions">
         #region Convert to <xsl:value-of select="@name" />
         
-        public unsafe static <xsl:value-of select="@csharpType" /> _To<xsl:value-of select="@name" />(MxArray array)
+        unsafe static <xsl:value-of select="@csharpType" /> _To<xsl:value-of select="@name" />(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -384,7 +384,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static Complex&lt;<xsl:value-of select="@csharpType" />&gt; _To<xsl:value-of select="@name" />_Cplx(MxArray array)
+        unsafe static Complex&lt;<xsl:value-of select="@csharpType" />&gt; _To<xsl:value-of select="@name" />_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
@@ -410,7 +410,7 @@ namespace LabSharp
             }
         }
 
-        public unsafe static <xsl:value-of select="@csharpType" />[] _To<xsl:value-of select="@name" />Array1D(MxArray array)
+        unsafe static <xsl:value-of select="@csharpType" />[] _To<xsl:value-of select="@name" />Array1D(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -437,7 +437,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Complex&lt;<xsl:value-of select="@csharpType" />&gt;[] _To<xsl:value-of select="@name" />Array1D_Cplx(MxArray array)
+        unsafe static Complex&lt;<xsl:value-of select="@csharpType" />&gt;[] _To<xsl:value-of select="@name" />Array1D_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -465,7 +465,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _To<xsl:value-of select="@name" />Array(MxArray array)
+        unsafe static Array _To<xsl:value-of select="@name" />Array(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
@@ -497,7 +497,7 @@ namespace LabSharp
             return result;
         }
 
-        public unsafe static Array _To<xsl:value-of select="@name" />Array_Cplx(MxArray array)
+        unsafe static Array _To<xsl:value-of select="@name" />Array_Cplx(MxArray array)
         {
             if (array == null) throw new ArgumentNullException("array");
             int count = array.NumberOfElements;
