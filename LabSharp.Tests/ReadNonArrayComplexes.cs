@@ -93,5 +93,13 @@ namespace LabSharp.Tests
             m_eng.Eval("cplx = 'hello world'");
             m_eng.GetVariable<Complex<double>>("cplx");
         }
+
+        [Test]
+        [ExpectedException(typeof(InvalidCastException))]
+        public void ReadComplexBadType2()
+        {
+            m_eng.Eval("cplx = 5+6*i");
+            m_eng.GetVariable<Complex<DateTime>>("cplx");
+        }
     }
 }
