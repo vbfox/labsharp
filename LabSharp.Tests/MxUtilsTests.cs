@@ -9,10 +9,6 @@ namespace LabSharp.Tests
     [TestFixture]
     public class MxUtilsTests
     {
-        public MxUtilsTests()
-        {
-        }
-
         [Test]
         public void CoordinatesFromIndex_Base()
         {
@@ -133,6 +129,27 @@ namespace LabSharp.Tests
                 int r = MxUtils.IndexFromCoordinates(MxUtils.CoordinatesFromIndex(i, dims), dims);
                 Assert.AreEqual(i, r);
             }
+        }
+
+        static bool IntArraysAreEqual(int[] first, int[] second)
+        {
+            if (first.Length != second.Length) return false;
+            for(int i = 0; i < first.Length ; i++)
+            {
+                if (first[i] != second[i]) return false;
+            }
+            return true;
+        }
+
+        [Test]
+        public void GetArrayDimensions()
+        {
+            Assert.IsTrue(IntArraysAreEqual(new int[] { 3 },
+                MxUtils.GetArrayDimensions(new double[] {6, 7, 8})));
+            Assert.IsTrue(IntArraysAreEqual(new int[] { 1, 3 },
+                MxUtils.GetArrayDimensions(new double[,] { { 6, 7, 8 } })));
+            Assert.IsTrue(IntArraysAreEqual(new int[] { 2, 1, 3 },
+                MxUtils.GetArrayDimensions(new double[,,] { { { 6, 7, 8 } }, { { 6, 7, 8 } } })));
         }
     }
 }

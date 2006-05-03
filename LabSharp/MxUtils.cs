@@ -123,5 +123,19 @@ namespace LabSharp
             }
             return s.ToString();
         }
+
+        public static int[] GetArrayDimensions(Array array)
+        {
+            int[] result = new int[array.Rank];
+
+            for (int i = 0; i < array.Rank; i++)
+            {
+                if (array.GetLowerBound(i) != 0)
+                    throw new Exception("GetArrayDimensions only works with 0 based arrays");
+                result[i] = array.GetLength(i);
+            }
+
+            return result;
+        }
     }
 }
