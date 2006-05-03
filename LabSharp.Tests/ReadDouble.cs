@@ -6,30 +6,21 @@ using NUnit.Framework;
 namespace LabSharp.Tests
 {
     [TestFixture]
-    public class ReadDoubles
+    public class ReadDouble
     {
         Engine m_eng;
-        MxArray m_temp;
 
         [SetUp]
         public void Setup()
         {
             m_eng = Engine.Open(false);
-            m_temp = m_eng.GetVariable("val");
+            m_eng.Eval("clear val");
         }
 
         [TearDown]
         public void TearDown()
         {
-            if (m_temp != null)
-            {
-                m_eng.SetVariable("val", m_temp);
-                m_temp.Destroy();
-            }
-            else
-            {
-                m_eng.Eval("clear val");
-            }
+            m_eng.Eval("clear val");
         }
 
         [Test]
