@@ -45,7 +45,7 @@ namespace LabSharp
 			ExtractTypeInfos(genericType, out convertFromDataType, out isArray, out isComplexType);
             
             <xsl:apply-templates select="Convert" mode="if-on-type" />
-                throw new Exception("Boom!");
+                throw new Exception("Boom!"); //FIXME
         }
 
         <xsl:apply-templates select="Convert" mode="mxarray-from-functions" />
@@ -59,7 +59,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFrom<xsl:value-of select="@name" />Array_Cplx(
@@ -70,8 +70,6 @@ namespace LabSharp
                          return _MxArrayFrom<xsl:value-of select="@name" />Array(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -103,6 +101,37 @@ namespace LabSharp
             return result;
         }
 
+        static MxArray _MxArrayFrom<xsl:value-of select="@name" />Array(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.<xsl:value-of select="@matlabType" />, Complexity.Real);
+            unsafe
+            {
+                <xsl:value-of select="@csharpType" />* pr;
+                pr = (<xsl:value-of select="@csharpType" />*)result.RealElements;
+
+                for(int i = 0; i &lt; count; i++)
+                {
+                    *pr++ = (<xsl:value-of select="@csharpType" />)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
+
+            return result;
+        }
+
         unsafe static MxArray _MxArrayFrom<xsl:value-of select="@name" />_Cplx(
             Complex&lt;<xsl:value-of select="@csharpType" />&gt; value)
         {
@@ -117,7 +146,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFrom<xsl:value-of select="@name" />Array_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.<xsl:value-of select="@matlabType" />, Complexity.Complex);
+            unsafe
+            {
+                <xsl:value-of select="@csharpType" />* pr, pi;
+                pr = (<xsl:value-of select="@csharpType" />*)result.RealElements;
+                pi = (<xsl:value-of select="@csharpType" />*)result.ImaginaryElements;
+
+                Complex&lt;<xsl:value-of select="@csharpType" />&gt; currentValue;
+                for(int i = 0; i &lt; count; i++)
+                {
+                    currentValue = (Complex&lt;<xsl:value-of select="@csharpType" />&gt;)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 </xsl:template>
 
 </xsl:stylesheet>

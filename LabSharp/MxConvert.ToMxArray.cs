@@ -43,7 +43,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromCharArray_Cplx(
@@ -54,8 +54,6 @@ namespace LabSharp
                          return _MxArrayFromCharArray(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -77,7 +75,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromBooleanArray_Cplx(
@@ -88,8 +86,6 @@ namespace LabSharp
                          return _MxArrayFromBooleanArray(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -111,7 +107,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromSByteArray_Cplx(
@@ -122,8 +118,6 @@ namespace LabSharp
                          return _MxArrayFromSByteArray(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -145,7 +139,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromByteArray_Cplx(
@@ -156,8 +150,6 @@ namespace LabSharp
                          return _MxArrayFromByteArray(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -179,7 +171,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromUInt16Array_Cplx(
@@ -190,8 +182,6 @@ namespace LabSharp
                          return _MxArrayFromUInt16Array(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -213,7 +203,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromInt16Array_Cplx(
@@ -224,8 +214,6 @@ namespace LabSharp
                          return _MxArrayFromInt16Array(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -247,7 +235,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromUInt32Array_Cplx(
@@ -258,8 +246,6 @@ namespace LabSharp
                          return _MxArrayFromUInt32Array(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -281,7 +267,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromInt32Array_Cplx(
@@ -292,8 +278,6 @@ namespace LabSharp
                          return _MxArrayFromInt32Array(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -315,7 +299,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromUInt64Array_Cplx(
@@ -326,8 +310,6 @@ namespace LabSharp
                          return _MxArrayFromUInt64Array(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -349,7 +331,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromInt64Array_Cplx(
@@ -360,8 +342,6 @@ namespace LabSharp
                          return _MxArrayFromInt64Array(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -383,7 +363,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromSingleArray_Cplx(
@@ -394,8 +374,6 @@ namespace LabSharp
                          return _MxArrayFromSingleArray(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -417,7 +395,7 @@ namespace LabSharp
             {
                 if (isArray)
                 {
-                    /*
+                    
                     if (isComplexType)
                     {
                          return _MxArrayFromDoubleArray_Cplx(
@@ -428,8 +406,6 @@ namespace LabSharp
                          return _MxArrayFromDoubleArray(
                             (Array)(Object)value);
                     }
-                    */
-                    return null; // TODO
                 }
                 else
                 {
@@ -447,7 +423,7 @@ namespace LabSharp
             }
             else
 
-                throw new Exception("Boom!");
+                throw new Exception("Boom!"); //FIXME
         }
 
         
@@ -459,6 +435,37 @@ namespace LabSharp
             char* pr;
             pr = (char*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromCharArray(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Char, Complexity.Real);
+            unsafe
+            {
+                char* pr;
+                pr = (char*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (char)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -477,7 +484,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromCharArray_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Char, Complexity.Complex);
+            unsafe
+            {
+                char* pr, pi;
+                pr = (char*)result.RealElements;
+                pi = (char*)result.ImaginaryElements;
+
+                Complex<char> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<char>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromBoolean(
             bool value)
@@ -487,6 +529,37 @@ namespace LabSharp
             bool* pr;
             pr = (bool*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromBooleanArray(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Logical, Complexity.Real);
+            unsafe
+            {
+                bool* pr;
+                pr = (bool*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (bool)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -505,7 +578,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromBooleanArray_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Logical, Complexity.Complex);
+            unsafe
+            {
+                bool* pr, pi;
+                pr = (bool*)result.RealElements;
+                pi = (bool*)result.ImaginaryElements;
+
+                Complex<bool> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<bool>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromSByte(
             sbyte value)
@@ -515,6 +623,37 @@ namespace LabSharp
             sbyte* pr;
             pr = (sbyte*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromSByteArray(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Int8, Complexity.Real);
+            unsafe
+            {
+                sbyte* pr;
+                pr = (sbyte*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (sbyte)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -533,7 +672,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromSByteArray_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Int8, Complexity.Complex);
+            unsafe
+            {
+                sbyte* pr, pi;
+                pr = (sbyte*)result.RealElements;
+                pi = (sbyte*)result.ImaginaryElements;
+
+                Complex<sbyte> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<sbyte>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromByte(
             byte value)
@@ -543,6 +717,37 @@ namespace LabSharp
             byte* pr;
             pr = (byte*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromByteArray(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.UInt8, Complexity.Real);
+            unsafe
+            {
+                byte* pr;
+                pr = (byte*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (byte)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -561,7 +766,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromByteArray_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.UInt8, Complexity.Complex);
+            unsafe
+            {
+                byte* pr, pi;
+                pr = (byte*)result.RealElements;
+                pi = (byte*)result.ImaginaryElements;
+
+                Complex<byte> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<byte>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromUInt16(
             ushort value)
@@ -571,6 +811,37 @@ namespace LabSharp
             ushort* pr;
             pr = (ushort*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromUInt16Array(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.UInt16, Complexity.Real);
+            unsafe
+            {
+                ushort* pr;
+                pr = (ushort*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (ushort)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -589,7 +860,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromUInt16Array_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.UInt16, Complexity.Complex);
+            unsafe
+            {
+                ushort* pr, pi;
+                pr = (ushort*)result.RealElements;
+                pi = (ushort*)result.ImaginaryElements;
+
+                Complex<ushort> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<ushort>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromInt16(
             short value)
@@ -599,6 +905,37 @@ namespace LabSharp
             short* pr;
             pr = (short*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromInt16Array(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Int16, Complexity.Real);
+            unsafe
+            {
+                short* pr;
+                pr = (short*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (short)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -617,7 +954,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromInt16Array_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Int16, Complexity.Complex);
+            unsafe
+            {
+                short* pr, pi;
+                pr = (short*)result.RealElements;
+                pi = (short*)result.ImaginaryElements;
+
+                Complex<short> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<short>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromUInt32(
             uint value)
@@ -627,6 +999,37 @@ namespace LabSharp
             uint* pr;
             pr = (uint*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromUInt32Array(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.UInt32, Complexity.Real);
+            unsafe
+            {
+                uint* pr;
+                pr = (uint*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (uint)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -645,7 +1048,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromUInt32Array_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.UInt32, Complexity.Complex);
+            unsafe
+            {
+                uint* pr, pi;
+                pr = (uint*)result.RealElements;
+                pi = (uint*)result.ImaginaryElements;
+
+                Complex<uint> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<uint>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromInt32(
             int value)
@@ -655,6 +1093,37 @@ namespace LabSharp
             int* pr;
             pr = (int*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromInt32Array(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Int32, Complexity.Real);
+            unsafe
+            {
+                int* pr;
+                pr = (int*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (int)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -673,7 +1142,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromInt32Array_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Int32, Complexity.Complex);
+            unsafe
+            {
+                int* pr, pi;
+                pr = (int*)result.RealElements;
+                pi = (int*)result.ImaginaryElements;
+
+                Complex<int> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<int>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromUInt64(
             ulong value)
@@ -683,6 +1187,37 @@ namespace LabSharp
             ulong* pr;
             pr = (ulong*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromUInt64Array(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.UInt64, Complexity.Real);
+            unsafe
+            {
+                ulong* pr;
+                pr = (ulong*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (ulong)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -701,7 +1236,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromUInt64Array_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.UInt64, Complexity.Complex);
+            unsafe
+            {
+                ulong* pr, pi;
+                pr = (ulong*)result.RealElements;
+                pi = (ulong*)result.ImaginaryElements;
+
+                Complex<ulong> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<ulong>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromInt64(
             long value)
@@ -711,6 +1281,37 @@ namespace LabSharp
             long* pr;
             pr = (long*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromInt64Array(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Int64, Complexity.Real);
+            unsafe
+            {
+                long* pr;
+                pr = (long*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (long)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -729,7 +1330,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromInt64Array_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Int64, Complexity.Complex);
+            unsafe
+            {
+                long* pr, pi;
+                pr = (long*)result.RealElements;
+                pi = (long*)result.ImaginaryElements;
+
+                Complex<long> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<long>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromSingle(
             float value)
@@ -739,6 +1375,37 @@ namespace LabSharp
             float* pr;
             pr = (float*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromSingleArray(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Single, Complexity.Real);
+            unsafe
+            {
+                float* pr;
+                pr = (float*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (float)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -757,7 +1424,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromSingleArray_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Single, Complexity.Complex);
+            unsafe
+            {
+                float* pr, pi;
+                pr = (float*)result.RealElements;
+                pi = (float*)result.ImaginaryElements;
+
+                Complex<float> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<float>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
         unsafe static MxArray _MxArrayFromDouble(
             double value)
@@ -767,6 +1469,37 @@ namespace LabSharp
             double* pr;
             pr = (double*)result.RealElements;
             *pr = value;
+
+            return result;
+        }
+
+        static MxArray _MxArrayFromDoubleArray(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Double, Complexity.Real);
+            unsafe
+            {
+                double* pr;
+                pr = (double*)result.RealElements;
+
+                for(int i = 0; i < count; i++)
+                {
+                    *pr++ = (double)
+                        value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                }
+            }
 
             return result;
         }
@@ -785,7 +1518,42 @@ namespace LabSharp
             *pi = value.ImaginaryPart;
 
             return result;
-        }        
+        }
+
+        static MxArray _MxArrayFromDoubleArray_Cplx(
+            Array value)
+        {
+            int count = value.Length;
+            int[] arraydims = MxUtils.GetArrayDimensions(value);
+            int[] dims;
+            if (value.Rank == 1)
+            {
+                dims = new int[] {1, count};
+            }
+            else
+            {
+                dims = (int[])arraydims.Clone();
+            }
+            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+                ClassID.Double, Complexity.Complex);
+            unsafe
+            {
+                double* pr, pi;
+                pr = (double*)result.RealElements;
+                pi = (double*)result.ImaginaryElements;
+
+                Complex<double> currentValue;
+                for(int i = 0; i < count; i++)
+                {
+                    currentValue = (Complex<double>)
+                         value.GetValue(MxUtils.CoordinatesFromIndex(i, arraydims));
+                    *pr++ = currentValue.RealPart;
+                    *pi++ = currentValue.ImaginaryPart;
+                }
+            }
+
+            return result;
+        }
 
 
 	}
