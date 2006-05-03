@@ -9,27 +9,18 @@ namespace LabSharp.Tests
     public class ReadNonArrayComplexes
     {
         Engine m_eng;
-        MxArray m_temp;
 
         [SetUp]
         public void Setup()
         {
             m_eng = Engine.Open(false);
-            m_temp = m_eng.GetVariable("cplx");
+            m_eng.Eval("clear cplx");
         }
 
         [TearDown]
         public void TearDown()
         {
-            if (m_temp != null)
-            {
-                m_eng.SetVariable("cplx", m_temp);
-                m_temp.Destroy();
-            }
-            else
-            {
-                m_eng.Eval("clear cplx");
-            }
+            m_eng.Eval("clear cplx");
         }
 
         [Test]
