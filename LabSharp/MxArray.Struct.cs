@@ -25,12 +25,12 @@ using LabSharp.NativeFunctions;
 
 namespace LabSharp
 {
-	partial class MxArray
+	public partial class MxArray
 	{
         /// <summary>
         /// Get the name of all fields.
         /// </summary>
-        string[] FieldNames
+        public string[] FieldNames
         {
             get
             {

@@ -24,7 +24,7 @@ using System.Text;
 
 namespace LabSharp
 {
-    partial class MxArray
+    public partial class MxArray
     {
         public bool IsClass(ClassID classid)
         {
