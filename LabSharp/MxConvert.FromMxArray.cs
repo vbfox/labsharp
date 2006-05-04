@@ -1003,7 +1003,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1027,7 +1026,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1211,7 +1209,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1235,7 +1232,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1419,7 +1415,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1443,7 +1438,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1627,7 +1621,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1651,7 +1644,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1835,7 +1827,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -1877,7 +1868,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -2237,7 +2227,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -2279,7 +2268,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -2639,7 +2627,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -2699,7 +2686,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -3235,7 +3221,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -3295,7 +3280,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -3831,7 +3815,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -3909,7 +3892,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -4621,7 +4603,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -4699,7 +4680,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -5411,7 +5391,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -5507,7 +5486,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -6395,7 +6373,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 
@@ -6500,7 +6477,6 @@ namespace LabSharp
             if (array.NumberOfElements != 1)
                 throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
             ClassID classId = array.Class;
-            bool isComplex = array.IsComplex;   
             switch(classId)
             {
                 

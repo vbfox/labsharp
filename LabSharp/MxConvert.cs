@@ -74,7 +74,6 @@ namespace LabSharp
             bool isArrayClass = genericType == typeof(Array);
             bool isObjectClass = genericType == typeof(Object);
             bool isStringClass = genericType == typeof(String);
-            Type arrayElementType = genericType.GetElementType();
 
             if (isStringClass)
             {
