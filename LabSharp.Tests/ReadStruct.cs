@@ -15,14 +15,12 @@ namespace LabSharp.Tests
         {
             m_eng = Engine.Open(false);
             m_eng.Eval("clear val");
-            m_eng.Eval("clear val_ok");
         }
 
         [TearDown]
         public void TearDown()
         {
             m_eng.Eval("clear val");
-            m_eng.Eval("clear val_ok");
         }
 
         [Test]
@@ -36,6 +34,17 @@ namespace LabSharp.Tests
         }
 
         [Test]
+        public void StructWithComplex()
+        {
+            m_eng.Eval("val.x = 6.5 + 5.7 * i");
+            using (MxArray val = m_eng.GetVariable("val"))
+            {
+                Assert.IsTrue(new Complex<double>(6.5, 5.7).Equals(
+                    val.GetField<Complex<double>>(0, "x")));
+            }
+        }
+
+        [Test]
         public void StructWithDoubleArray()
         {
             m_eng.Eval("val(1).x = 6.5;val(2).x = 8.7");
@@ -43,6 +52,19 @@ namespace LabSharp.Tests
             {
                 Assert.AreEqual(6.5, val.GetField<double>(0, "x"));
                 Assert.AreEqual(8.7, val.GetField<double>(1, "x"));
+            }
+        }
+
+        [Test]
+        public void StructWithComplexArray()
+        {
+            m_eng.Eval("val(1).x = 6.5+8.18*i;val(2).x = 8.7+98771.6*i");
+            using (MxArray val = m_eng.GetVariable("val"))
+            {
+                Assert.IsTrue(new Complex<double>(6.5, 8.18).Equals(
+                    val.GetField<Complex<double>>(0, "x")));
+                Assert.IsTrue(new Complex<double>(8.7, 98771.6).Equals(
+                    val.GetField<Complex<double>>(1, "x")));
             }
         }
 
