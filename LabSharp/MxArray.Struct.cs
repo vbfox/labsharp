@@ -34,7 +34,7 @@ namespace LabSharp
         {
             get
             {
-                AssertClass(ClassID.Struct, "get_Fields");
+                AssertClass(ClassID.Struct, "get_FieldNames");
                 int count = NumberOfFields;
                 string[] result = new string[count];
 
@@ -100,6 +100,8 @@ namespace LabSharp
             return LibMx.mxGetFieldNameByNumber(m_array, field_number);
         }
 
+        #region GetField
+
         public MxArray GetField(int index, string field_name)
         {
             AssertClass(ClassID.Struct, "GetField");
@@ -112,6 +114,55 @@ namespace LabSharp
             AssertFieldExists(field_number);
             return new MxArray(LibMx.mxGetFieldByNumber(m_array, index, field_number));
         }
+
+        public TType GetField<TType>(int index, string field_name)
+        {
+            using (MxArray array = GetField(index, field_name))
+            {
+                return MxConvert.FromMxArray<TType>(array);
+            }
+        }
+
+        public TType GetField<TType>(int index, int field_number)
+        {
+            using(MxArray array = GetField(index, field_number))
+            {
+                return MxConvert.FromMxArray<TType>(array);
+            }
+        }
+
+        public MxArray GetField(int[] coords, string field_name)
+        {
+            return GetField(IndexFromCoordinates(coords), field_name);
+        }
+
+        public MxArray GetField(int[] coords, int field_number)
+        {
+            using (MxArray array = GetField(coords, field_number))
+            {
+                return GetField(coords, field_number);
+            }
+        }
+
+        public TType GetField<TType>(int[] coords, string field_name)
+        {
+            using (MxArray array = GetField(coords, field_name))
+            {
+                return MxConvert.FromMxArray<TType>(array);
+            }
+        }
+
+        public TType GetField<TType>(int[] coords, int field_number)
+        {
+            using (MxArray array = GetField(coords, field_number))
+            {
+                return MxConvert.FromMxArray<TType>(array);
+            }
+        }
+
+        #endregion
+
+        #region SetField
 
         public void SetField(int index, int field_number, MxArray value)
         {
@@ -127,20 +178,28 @@ namespace LabSharp
             LibMx.mxSetFieldByNumber(m_array, index, field_number, value.m_array);
         }
 
+        public void SetField<TType>(int index, int field_number, TType value)
+        {
+            AssertClass(ClassID.Struct, "SetField");
+            using(MxArray array = MxConvert.ToMxArray(value))
+            {
+                SetField(index, field_number, value);
+            }
+        }
+
         public void SetField(int index, string field_name, MxArray value)
         {
             AssertClass(ClassID.Struct, "SetField");
             SetField(index, GetFieldNumber(field_name), value);
         }
 
-        public MxArray GetField(int[] coords, string field_name)
+        public void SetField<TType>(int index, string field_name, TType value)
         {
-            return GetField(IndexFromCoordinates(coords), field_name);
-        }
-
-        public MxArray GetField(int[] coords, int field_number)
-        {
-            return GetField(IndexFromCoordinates(coords), field_number);
+            AssertClass(ClassID.Struct, "SetField");
+            using (MxArray array = MxConvert.ToMxArray(value))
+            {
+                SetField(index, field_name, value);
+            }
         }
 
         public void SetField(int[] coords, int field_number, MxArray value)
@@ -152,5 +211,23 @@ namespace LabSharp
         {
             SetField(IndexFromCoordinates(coords), field_name, value);
         }
-	}
+
+        public void SetField<TType>(int[] coords, int field_number, TType value)
+        {
+            using (MxArray array = MxConvert.ToMxArray(value))
+            {
+                SetField(coords, field_number, array);
+            }
+        }
+
+        public void SetField<TType>(int[] coords, string field_name, TType value)
+        {
+            using (MxArray array = MxConvert.ToMxArray(value))
+            {
+                SetField(coords, field_name, array);
+            }
+        }
+
+        #endregion
+    }
 }
