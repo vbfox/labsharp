@@ -43,6 +43,7 @@
     <Compile Include="MxUtilsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadArrayComplexes.cs" />
+    <Compile Include="ReadStruct.cs" />
     <Compile Include="WriteDouble.cs" />
   </ItemGroup>
   <ItemGroup>
