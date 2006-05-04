@@ -105,14 +105,26 @@ namespace LabSharp
         public MxArray GetField(int index, string field_name)
         {
             AssertClass(ClassID.Struct, "GetField");
-            return new MxArray(LibMx.mxGetField(m_array, index, field_name));
+
+            IntPtr arrayPtr = LibMx.mxGetField(m_array, index, field_name);
+            MxArray array = new MxArray(arrayPtr);
+            // The array is still inside the struct, freeing his memory is a very bad idea
+            array.DoNotDelete = true;
+
+            return array;
         }
 
         public MxArray GetField(int index, int field_number)
         {
             AssertClass(ClassID.Struct, "GetField");
             AssertFieldExists(field_number);
-            return new MxArray(LibMx.mxGetFieldByNumber(m_array, index, field_number));
+            
+            IntPtr arrayPtr = LibMx.mxGetFieldByNumber(m_array, index, field_number);
+            MxArray array = new MxArray(arrayPtr);
+            // The array is still inside the struct, freeing his memory is a very bad idea
+            array.DoNotDelete = true;
+
+            return array;
         }
 
         public TType GetField<TType>(int index, string field_name)
@@ -138,10 +150,7 @@ namespace LabSharp
 
         public MxArray GetField(int[] coords, int field_number)
         {
-            using (MxArray array = GetField(coords, field_number))
-            {
-                return GetField(coords, field_number);
-            }
+            return GetField(IndexFromCoordinates(coords), field_number);
         }
 
         public TType GetField<TType>(int[] coords, string field_name)
