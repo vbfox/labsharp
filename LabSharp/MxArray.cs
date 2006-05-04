@@ -44,6 +44,22 @@ namespace LabSharp
         IntPtr m_array;
         public IntPtr NativeObject { get { return m_array; } }
 
+        bool m_doNotDelete = false;
+        /// <summary>
+        /// <para>
+        /// Set this field if you don't want that Dispose or Finalize delete the
+        /// unmanaged memory.
+        /// </para><para>
+        /// This is usefull to set it to true if you have to return the value in
+        /// a Mex file or if this array is contained inside another (Like a struct).
+        /// </para>
+        /// </summary>
+        public bool DoNotDelete
+        {
+            get { return m_doNotDelete; }
+            set { m_doNotDelete = value; }
+        }
+
         private void CheckPointer()
         {
             if (m_array == IntPtr.Zero)
@@ -100,18 +116,7 @@ namespace LabSharp
         public void Destroy()
         {
             CheckPointer();
-            LibMx.mxDestroyArray(m_array);
-            Invalidate();
-        }
-
-        /// <summary>
-        /// Invalidate the MxWrapper without freeing any memory. Should be used
-        /// only in some special cases where you return things to MATLAB (Mex 
-        /// file result) and so don't want the destructor to free the 
-        /// associated memory.
-        /// </summary>
-        public void Invalidate()
-        {
+            if (!m_doNotDelete) LibMx.mxDestroyArray(m_array);
             m_array = IntPtr.Zero;
         }
 
