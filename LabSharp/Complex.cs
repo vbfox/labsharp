@@ -4,7 +4,8 @@ using System.Text;
 
 namespace LabSharp
 {
-    public struct Complex<T> where T : struct
+    public struct Complex<T> : IEquatable<Complex<T>>, IEquatable<T>
+        where T : struct, IEquatable<T>
     {
         T m_realPart;
 
@@ -32,5 +33,21 @@ namespace LabSharp
             m_realPart = realPart;
             m_imaginaryPart = imaginaryPart;
         }
+
+        #region IEquatable Members
+
+        public bool Equals(Complex<T> other)
+        {
+            return (other.m_imaginaryPart.Equals(m_imaginaryPart))
+                && (other.m_realPart.Equals(m_realPart));
+        }
+
+        bool IEquatable<T>.Equals(T other)
+        {
+            return (other.Equals(m_realPart)
+                && (m_imaginaryPart.Equals(default(T))));
+        }
+
+        #endregion
     }
 }
