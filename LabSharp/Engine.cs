@@ -167,7 +167,16 @@ namespace LabSharp
             using (MxArray array = GetVariable(var_name))
             {
                 if (array == null) { throw new VariableNotFoundException(var_name); }
-                return MxConvert.FromMxArray<TType>(array, noVectorization);
+                try
+                {
+                    return MxConvert.FromMxArray<TType>(array, noVectorization);
+                }
+                catch (InvalidCastException e)
+                {
+                    throw new InvalidCastException(string.Format(
+                        "Unable to get the variable \"{0}\" as {1}.",
+                        var_name, typeof(TType).Name), e);
+                }
             }
         }
 

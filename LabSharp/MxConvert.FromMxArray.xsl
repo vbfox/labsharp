@@ -36,7 +36,7 @@ namespace LabSharp
 {
     public static partial class MxConvert
     {
-        const string ONE_ELEMENT_REQUIRED = "A mxArray with only 1 element is required.";
+        const string ONE_ELEMENT_REQUIRED = "A mxArray with only 1 element is required, but readed : {0}.";
         const string NO_WAY_TO_CAST = "Cannot cast a {0} mxArray to {1}.";
         const string NO_DOTNET_TYPE = "No corresponding .Net type exists for matlab's {0}.";
 
@@ -347,7 +347,7 @@ namespace LabSharp
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
-                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+                throw new InvalidCastException(string.Format(ONE_ELEMENT_REQUIRED, array.ToString()));
             ClassID classId = array.Class;
             switch(classId)
             {
@@ -371,7 +371,7 @@ namespace LabSharp
         {
             if (array == null) throw new ArgumentNullException("array");
             if (array.NumberOfElements != 1)
-                throw new InvalidCastException(ONE_ELEMENT_REQUIRED);
+                throw new InvalidCastException(string.Format(ONE_ELEMENT_REQUIRED, array.ToString()));
             ClassID classId = array.Class;
             switch(classId)
             {
