@@ -54,6 +54,11 @@ namespace LabSharp
             }
         }
 
+        public static Engine Open()
+        {
+            return Open(false);
+        }
+
         public static Engine Open(bool closeOnDispose)
         {
             return new Engine(LibEng.engOpen(), closeOnDispose);
