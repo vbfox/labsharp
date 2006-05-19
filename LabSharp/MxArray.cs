@@ -41,51 +41,6 @@ namespace LabSharp
             }
         }
 
-        IntPtr m_array;
-        public IntPtr NativeObject { get { return m_array; } }
-
-        bool m_doNotDelete = false;
-        /// <summary>
-        /// <para>
-        /// Set this field if you don't want that Dispose or Finalize delete the
-        /// unmanaged memory.
-        /// </para><para>
-        /// This is usefull to set it to true if you have to return the value in
-        /// a Mex file or if this array is contained inside another (Like a struct).
-        /// </para>
-        /// </summary>
-        public bool DoNotDelete
-        {
-            get { return m_doNotDelete; }
-            set { m_doNotDelete = value; }
-        }
-
-        private void CheckPointer()
-        {
-            if (m_array == IntPtr.Zero)
-            {
-                throw new Exception("Invalid mxArray pointer");
-            }
-        }
-
-        private void AssertClass(ClassID expected, string functionName)
-        {
-            ClassID classOfThis = Class;
-            if (classOfThis != expected)
-            {
-                throw new InvalidClassIDException(expected, classOfThis, functionName);
-            }
-        }
-
-        public MxArray(IntPtr array)
-        {
-            m_array = array;
-            if (m_array == IntPtr.Zero)
-            {
-                throw new Exception("Invalid mxArray pointer");
-            }
-        }
-
         #region Static constructors
 
         public static MxArray CreateDoubleMatrix(int n, int m, Complexity complexFlag)
@@ -110,13 +65,146 @@ namespace LabSharp
 
         #endregion
 
+        IntPtr m_array;
+        public IntPtr NativeObject { get { return m_array; } }
+
+        //XXX
+        /*
+        bool m_doNotDelete = false;
+        /// <summary>
+        /// <para>
+        /// Set this field if you don't want that Dispose or Finalize delete the
+        /// unmanaged memory.
+        /// </para><para>
+        /// This is usefull to set it to true if you have to return the value in
+        /// a Mex file.
+        /// </para>
+        /// </summary>
+        /*
+        public bool DoNotDelete
+        {
+            get { return m_doNotDelete; }
+            set { m_doNotDelete = value; }
+        }*/
+
+        #region Child/Parent management
+
+        List<MxArray> m_childs = new List<MxArray>();
+
+        MxArray m_parent = null;
+        /// <summary>
+        /// Indicate the parent of the MxArray (Like a struct for the struct elements)
+        /// <remarks>
+        /// Do not set this value if you don't known what you do, it could lead to memory
+        /// leaks, double delete or access to invalid memory.
+        /// </remarks>
+        /// </summary>
+        public MxArray Parent
+        {
+            get { return m_parent; }
+            protected set {
+                // Something strange is happenning
+                if (m_parent != null) throw new InvalidOperationException("Cannot change parent if it is already set");
+
+                // Attach to the new parent
+                m_parent = value;
+                m_parent.AddChild(this);
+            }
+        }
+
+        void RemoveChilds(IntPtr arrayPtr)
+        {
+            // Code is in 2 part because Destroy change the parent's m_child content
+            // (And we can't do that in a foreach)
+            List<MxArray> toRemove = new List<MxArray>();
+            foreach (MxArray child in m_childs)
+            {
+                if (child.m_array == arrayPtr)
+                {
+                    toRemove.Add(child);
+                }
+            }
+            foreach (MxArray arrayToRemove in toRemove)
+            {
+                arrayToRemove.Destroy();
+            }
+        }
+
+        void RemoveChild(MxArray child)
+        {
+            m_childs.Remove(child);
+        }
+
+        void AddChild(MxArray child)
+        {
+            m_childs.Add(child);
+        }
+
+        /// <summary>
+        /// Call <see cref="Destroy"/> on all our childs (It doesn't remove anything
+        /// as they are the childs of this mxArray and their memory will be cleared
+        /// with it) and clear the child list.
+        /// </summary>
+        void ClearChilds()
+        {
+            foreach (MxArray child in m_childs)
+            {
+                child.Destroy();
+            }
+            m_childs.Clear();
+        }
+
+        #endregion
+
+        void CheckPointer()
+        {
+            if (m_array == IntPtr.Zero)
+            {
+                throw new Exception("Invalid mxArray pointer");
+            }
+        }
+
+        void AssertClass(ClassID expected, string functionName)
+        {
+            ClassID classOfThis = Class;
+            if (classOfThis != expected)
+            {
+                throw new InvalidClassIDException(expected, classOfThis, functionName);
+            }
+        }
+
+        public MxArray(IntPtr array, MxArray parent)
+            : this(array)
+        {
+            Parent = parent;
+        }
+
+        public MxArray(IntPtr array)
+        {
+            m_array = array;
+            if (m_array == IntPtr.Zero)
+            {
+                throw new Exception("Invalid mxArray pointer");
+            }
+        }
+
         /// <summary>
         /// Destroy the memory allocated for the array in Matlab.
         /// </summary>
         public void Destroy()
         {
             CheckPointer();
-            if (!m_doNotDelete) LibMx.mxDestroyArray(m_array);
+            ClearChilds();
+
+            if (m_parent == null)
+            {
+                LibMx.mxDestroyArray(m_array);
+            }
+            else
+            {
+                m_parent.RemoveChild(this);
+            }
+
             m_array = IntPtr.Zero;
         }
 

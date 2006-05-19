@@ -27,6 +27,11 @@ namespace LabSharp
 {
 	public partial class MxArray
 	{
+        public static MxArray CreateStruct()
+        {
+            return CreateNumericMatrix(1, 1, ClassID.Struct, Complexity.Real);
+        }
+
         /// <summary>
         /// Get the name of all fields.
         /// </summary>
@@ -69,6 +74,9 @@ namespace LabSharp
             AssertClass(ClassID.Struct, "RemoveField");
             AssertFieldExists(field_number);
             LibMx.mxRemoveField(m_array, field_number);
+
+            // We can't known from what field our childs where coming, remove them all
+            ClearChilds();
         }
 
         public void RemoveField(string field_name)
@@ -82,15 +90,32 @@ namespace LabSharp
             int index = LibMx.mxAddField(m_array, field_name);
             if (index < 0)
             {
+                //FIXME: Put a better Exception type and error message
                 throw new Exception(String.Format("Unable to add the field {0}", field_name));
             }
             return index;
         }
 
-        public int GetFieldNumber(string field_name)
+        /// <summary>
+        /// Get the index of the field named field_name, returns -1 if the field doesn't
+        /// exists.
+        /// </summary>
+        int _GetFieldNumber(string field_name)
         {
             AssertClass(ClassID.Struct, "GetFieldNumber");
             return LibMx.mxGetFieldNumber(m_array, field_name);
+        }
+
+        /// <summary>
+        /// Get the index of the field named field_name, throw an ArgumentException
+        /// if the field doesn't exists.
+        /// </summary>
+        public int GetFieldNumber(string field_name)
+        {
+            int index = _GetFieldNumber(field_name);
+            if (index < 0)
+                throw new ArgumentException(string.Format("The field named {0} doesn't exists", field_name), "field_name");
+            return index;
         }
 
         public string GetFieldName(int field_number)
@@ -102,16 +127,26 @@ namespace LabSharp
 
         #region GetField
 
+        const string DIRECT_GET_FIELD_EXCEPTION = "To get a field without an index the matrix need to be 1x1";
+
+        public MxArray GetField(string field_name)
+        {
+            if (NumberOfElements > 1) throw new InvalidOperationException(DIRECT_GET_FIELD_EXCEPTION);
+            return GetField(0, field_name);
+        }
+
         public MxArray GetField(int index, string field_name)
         {
             AssertClass(ClassID.Struct, "GetField");
 
             IntPtr arrayPtr = LibMx.mxGetField(m_array, index, field_name);
-            MxArray array = new MxArray(arrayPtr);
-            // The array is still inside the struct, freeing his memory is a very bad idea
-            array.DoNotDelete = true;
+            return new MxArray(arrayPtr, this);
+        }
 
-            return array;
+        public MxArray GetField(int field_number)
+        {
+            if (NumberOfElements > 1) throw new InvalidOperationException(DIRECT_GET_FIELD_EXCEPTION);
+            return GetField(0, field_number);
         }
 
         public MxArray GetField(int index, int field_number)
@@ -120,11 +155,13 @@ namespace LabSharp
             AssertFieldExists(field_number);
             
             IntPtr arrayPtr = LibMx.mxGetFieldByNumber(m_array, index, field_number);
-            MxArray array = new MxArray(arrayPtr);
-            // The array is still inside the struct, freeing his memory is a very bad idea
-            array.DoNotDelete = true;
+            return new MxArray(arrayPtr, this);
+        }
 
-            return array;
+        public TType GetField<TType>(string field_name)
+        {
+            if (NumberOfElements > 1) throw new InvalidOperationException(DIRECT_GET_FIELD_EXCEPTION);
+            return GetField<TType>(0, field_name);
         }
 
         public TType GetField<TType>(int index, string field_name)
@@ -133,6 +170,12 @@ namespace LabSharp
             {
                 return MxConvert.FromMxArray<TType>(array);
             }
+        }
+
+        public TType GetField<TType>(int field_number)
+        {
+            if (NumberOfElements > 1) throw new InvalidOperationException(DIRECT_GET_FIELD_EXCEPTION);
+            return GetField<TType>(0, field_number);
         }
 
         public TType GetField<TType>(int index, int field_number)
@@ -173,18 +216,39 @@ namespace LabSharp
 
         #region SetField
 
+        const string DIRECT_SET_FIELD_EXCEPTION = "To set a field without an index the matrix need to be 1x1";
+
+        public void SetField(int field_number, MxArray value)
+        {
+            if (NumberOfElements > 1) throw new InvalidOperationException(DIRECT_SET_FIELD_EXCEPTION);
+            SetField(0, field_number, value);
+        }
+
         public void SetField(int index, int field_number, MxArray value)
         {
             AssertClass(ClassID.Struct, "SetField");
             AssertFieldExists(field_number);
-            // From MATLAB documentation :
-            //   This function does not free any memory allocated for existing data that it
-            //   displaces. To free existing memory, call mxFree on the pointer returned by
-            //   mxGetField before you call mxSetField.
+
+            if (value.Parent != null)
+            {
+                // We make a copy so we are sure that we could use this array as we wish.
+                // We don't do this otherwise for performance reasons.
+                value = value.Clone();
+            }
+
             IntPtr oldFieldValue = LibMx.mxGetFieldByNumber(m_array, index, field_number);
-            LibMx.mxFree(oldFieldValue);
+            
+            RemoveChilds(oldFieldValue);
+            LibMx.mxDestroyArray(oldFieldValue);
 
             LibMx.mxSetFieldByNumber(m_array, index, field_number, value.m_array);
+            value.Parent = this;
+        }
+
+        public void SetField<TType>(int field_number, TType value)
+        {
+            if (NumberOfElements > 1) throw new InvalidOperationException(DIRECT_SET_FIELD_EXCEPTION);
+            SetField<TType>(0, field_number, value);
         }
 
         public void SetField<TType>(int index, int field_number, TType value)
@@ -196,10 +260,28 @@ namespace LabSharp
             }
         }
 
+        public void SetField(string field_name, MxArray value)
+        {
+            if (NumberOfElements > 1) throw new InvalidOperationException(DIRECT_SET_FIELD_EXCEPTION);
+            SetField(0, field_name, value);
+        }
+
         public void SetField(int index, string field_name, MxArray value)
         {
             AssertClass(ClassID.Struct, "SetField");
-            SetField(index, GetFieldNumber(field_name), value);
+            int fieldIndex = _GetFieldNumber(field_name);
+            if (fieldIndex < 0)
+            {
+                // If the field doesn't exists we automatically add it
+                fieldIndex = AddField(field_name);
+            }
+            SetField(index, fieldIndex, value);
+        }
+
+        public void SetField<TType>(string field_name, TType value)
+        {
+            if (NumberOfElements > 1) throw new InvalidOperationException(DIRECT_SET_FIELD_EXCEPTION);
+            SetField<TType>(0, field_name, value);
         }
 
         public void SetField<TType>(int index, string field_name, TType value)
@@ -207,7 +289,7 @@ namespace LabSharp
             AssertClass(ClassID.Struct, "SetField");
             using (MxArray array = MxConvert.ToMxArray(value))
             {
-                SetField(index, field_name, value);
+                SetField(index, field_name, array);
             }
         }
 
