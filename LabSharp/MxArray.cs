@@ -147,11 +147,12 @@ namespace LabSharp
         /// </summary>
         void ClearChilds()
         {
-            foreach (MxArray child in m_childs)
+            // Can't use foreach because child's Destroy() call this.RemoveChild and so
+            // change the collection.
+            while (m_childs.Count > 0)
             {
-                child.Destroy();
+                m_childs[0].Destroy();
             }
-            m_childs.Clear();
         }
 
         #endregion
