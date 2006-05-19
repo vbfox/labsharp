@@ -21,8 +21,8 @@ namespace LabSharp.Tests
         [TearDown]
         public void TearDown()
         {
-            //m_eng.Eval("clear val");
-            //m_eng.Eval("clear val_tmp");
+            m_eng.Eval("clear val");
+            m_eng.Eval("clear val_tmp");
         }
 
         [Test]
