@@ -45,6 +45,7 @@
     <Compile Include="ReadArrayComplexes.cs" />
     <Compile Include="ReadStruct.cs" />
     <Compile Include="ReadWriteString.cs" />
+    <Compile Include="WriteStruct.cs" />
     <Compile Include="WriteDouble.cs" />
   </ItemGroup>
   <ItemGroup>
