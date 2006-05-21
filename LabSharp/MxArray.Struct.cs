@@ -29,7 +29,15 @@ namespace LabSharp
 	{
         public static MxArray CreateStruct()
         {
-            return CreateNumericMatrix(1, 1, ClassID.Struct, Complexity.Real);
+            return CreateArray(new int[] { 1 } , ClassID.Struct, Complexity.Real);
+        }
+
+        void AssertFieldExists(int field_number)
+        {
+            if (field_number >= NumberOfFields)
+            {
+                throw new ArgumentOutOfRangeException("field_number", "This field doesn't exists");
+            }
         }
 
         /// <summary>
@@ -58,14 +66,6 @@ namespace LabSharp
             {
                 AssertClass(ClassID.Struct, "NumberOfFields");
                 return LibMx.mxGetNumberOfFields(m_array);
-            }
-        }
-
-        void AssertFieldExists(int field_number)
-        {
-            if (field_number >= NumberOfFields)
-            {
-                throw new ArgumentOutOfRangeException("field_number", "This field doesn't exists");
             }
         }
 
@@ -320,5 +320,10 @@ namespace LabSharp
         }
 
         #endregion
+
+        bool IsField(string field_name)
+        {
+            return _GetFieldNumber(field_name) >= 0;
+        }
     }
 }
