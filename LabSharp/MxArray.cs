@@ -68,25 +68,6 @@ namespace LabSharp
         IntPtr m_array;
         public IntPtr NativeObject { get { return m_array; } }
 
-        //XXX
-        /*
-        bool m_doNotDelete = false;
-        /// <summary>
-        /// <para>
-        /// Set this field if you don't want that Dispose or Finalize delete the
-        /// unmanaged memory.
-        /// </para><para>
-        /// This is usefull to set it to true if you have to return the value in
-        /// a Mex file.
-        /// </para>
-        /// </summary>
-        /*
-        public bool DoNotDelete
-        {
-            get { return m_doNotDelete; }
-            set { m_doNotDelete = value; }
-        }*/
-
         #region Child/Parent management
 
         List<MxArray> m_childs = new List<MxArray>();
