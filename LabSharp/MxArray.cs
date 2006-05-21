@@ -42,20 +42,20 @@ namespace LabSharp
         }
 
         #region Static constructors
-
+        
         public static MxArray CreateDoubleMatrix(int n, int m, Complexity complexFlag)
         {
-            return CreateNumericMatrix(n, m, ClassID.Double, complexFlag);
+            return CreateMatrix(n, m, ClassID.Double, complexFlag);
         }
 
-        public static MxArray CreateNumericMatrix(int n, int m, ClassID classid, Complexity complexFlag)
+        public static MxArray CreateMatrix(int n, int m, ClassID classid, Complexity complexFlag)
         {
-            return CreateNumericArray(n, new int[] { m }, classid, complexFlag);
+            return CreateArray(new int[] { n, m }, classid, complexFlag);
         }
 
-        public static MxArray CreateNumericArray(int ndim, int[] dims, ClassID classid, Complexity complexFlag)
+        public static MxArray CreateArray(int[] dims, ClassID classid, Complexity complexFlag)
         {
-            return new MxArray(LibMx.mxCreateNumericArray(ndim, dims, classid, complexFlag));
+            return new MxArray(LibMx.mxCreateNumericArray(dims.Length, dims, classid, complexFlag));
         }
 
         public static MxArray CreateString(string str)
@@ -216,6 +216,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 return LibMx.mxGetClassID(m_array);
             }
         }
@@ -224,6 +225,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 return LibMx.mxGetN(m_array);
             }
         }
@@ -232,6 +234,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 return LibMx.mxGetM(m_array);
             }
         }
@@ -240,6 +243,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 return LibMx.mxIsEmpty(m_array);
             }
         }
@@ -251,6 +255,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 int elementSize = LibMx.mxGetElementSize(m_array);
                 if (elementSize == 0)
                 {
@@ -264,6 +269,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 return LibMx.mxGetNumberOfDimensions(m_array);
             }
         }
@@ -272,6 +278,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 int count = NumberOfDimensions;
                 int[] result = new int[count];
                 unsafe
@@ -293,6 +300,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 return LibMx.mxGetNumberOfElements(m_array);
             }
         }
@@ -348,11 +356,13 @@ namespace LabSharp
 
         public int[] CoordinatesFromIndex(int index)
         {
+            CheckPointer();
             return MxUtils.CoordinatesFromIndex(index, Dimensions);
         }
         
         public int IndexFromCoordinates(int[] coordinates)
         {
+            CheckPointer();
             return MxUtils.IndexFromCoordinates(coordinates, Dimensions);
         }
 
@@ -362,6 +372,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 if (!IsChar)
                 {
                     throw new Exception("Can't GetString on ClassID other than \"char\".");
@@ -380,6 +391,7 @@ namespace LabSharp
         {
             get
             {
+                CheckPointer();
                 return LibMx.mxGetScalar(m_array);
             }
         }
@@ -413,7 +425,7 @@ namespace LabSharp
             }
         }
 
-        #region Static methods (Working on doubles : Nan, Inf, ...)
+        #region Static properties and methods (Working on doubles : Nan, Inf, ...)
 
         public static double NaN
         {
@@ -517,7 +529,7 @@ namespace LabSharp
 
         public override string ToString()
         {
-            if (m_array == IntPtr.Zero) return "Invalidated or deleted mxArray";
+            if (m_array == IntPtr.Zero) return "Deleted mxArray";
 
             StringBuilder result = new StringBuilder();
 

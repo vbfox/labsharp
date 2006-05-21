@@ -92,7 +92,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFrom<xsl:value-of select="@name" />(
             <xsl:value-of select="@csharpType" /> value)
         {
-            MxArray result = MxArray.CreateNumericArray(1, new int[] { 1 },
+            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
                 ClassID.<xsl:value-of select="@matlabType" />, Complexity.Real);
             <xsl:value-of select="@csharpType" />* pr;
             pr = (<xsl:value-of select="@csharpType" />*)result.RealElements;
@@ -115,7 +115,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+            MxArray result = MxArray.CreateNumericArray(dims,
                 ClassID.<xsl:value-of select="@matlabType" />, Complexity.Real);
             unsafe
             {
@@ -135,7 +135,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFrom<xsl:value-of select="@name" />_Cplx(
             Complex&lt;<xsl:value-of select="@csharpType" />&gt; value)
         {
-            MxArray result = MxArray.CreateNumericArray(1, new int[] { 1 },
+            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
                 ClassID.<xsl:value-of select="@matlabType" />, Complexity.Complex);
             <xsl:value-of select="@csharpType" />* pr, pi;
 
@@ -162,7 +162,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims.Length, dims,
+            MxArray result = MxArray.CreateNumericArray(dims,
                 ClassID.<xsl:value-of select="@matlabType" />, Complexity.Complex);
             unsafe
             {
