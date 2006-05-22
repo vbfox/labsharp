@@ -71,7 +71,7 @@ namespace LabSharp
 
         private Engine(IntPtr engine, bool closeOnDispose)
         {
-            if (engine == IntPtr.Zero) throw new Exception("engine pointer is NULL");
+            if (engine == IntPtr.Zero) throw new Exception("engine pointer is null.");
             m_engine = engine;
             m_closeOnDispose = closeOnDispose;
         }
@@ -125,6 +125,7 @@ namespace LabSharp
 
         public void SetVariable(string var_name, MxArray array)
         {
+            if (array == null) throw new ArgumentNullException("array");
             CheckPointer();
             if (LibEng.engPutVariable(m_engine, var_name, array.NativeObject) != 0)
             {
