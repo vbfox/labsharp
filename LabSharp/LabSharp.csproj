@@ -39,7 +39,6 @@
     <Compile Include="MxUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="MatWrapper.cs" />
     <Compile Include="MxArray.cs" />
   </ItemGroup>
   <ItemGroup>
