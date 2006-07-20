@@ -132,3 +132,9 @@ dt
 	margin-bottom: 0.5em;
 	font-weight: bold;
 }
+
+.copyright
+{
+	text-align: center;
+	color: #888;
+}
