@@ -430,7 +430,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromChar(
             char value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Char, Complexity.Real);
             char* pr;
             pr = (char*)result.RealElements;
@@ -453,7 +453,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Char, Complexity.Real);
             unsafe
             {
@@ -473,7 +473,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromChar_Cplx(
             Complex<char> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Char, Complexity.Complex);
             char* pr, pi;
 
@@ -500,7 +500,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Char, Complexity.Complex);
             unsafe
             {
@@ -524,7 +524,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromBoolean(
             bool value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Logical, Complexity.Real);
             bool* pr;
             pr = (bool*)result.RealElements;
@@ -547,7 +547,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Logical, Complexity.Real);
             unsafe
             {
@@ -567,7 +567,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromBoolean_Cplx(
             Complex<bool> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Logical, Complexity.Complex);
             bool* pr, pi;
 
@@ -594,7 +594,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Logical, Complexity.Complex);
             unsafe
             {
@@ -618,7 +618,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromSByte(
             sbyte value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Int8, Complexity.Real);
             sbyte* pr;
             pr = (sbyte*)result.RealElements;
@@ -641,7 +641,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Int8, Complexity.Real);
             unsafe
             {
@@ -661,7 +661,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromSByte_Cplx(
             Complex<sbyte> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Int8, Complexity.Complex);
             sbyte* pr, pi;
 
@@ -688,7 +688,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Int8, Complexity.Complex);
             unsafe
             {
@@ -712,7 +712,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromByte(
             byte value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.UInt8, Complexity.Real);
             byte* pr;
             pr = (byte*)result.RealElements;
@@ -735,7 +735,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.UInt8, Complexity.Real);
             unsafe
             {
@@ -755,7 +755,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromByte_Cplx(
             Complex<byte> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.UInt8, Complexity.Complex);
             byte* pr, pi;
 
@@ -782,7 +782,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.UInt8, Complexity.Complex);
             unsafe
             {
@@ -806,7 +806,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromUInt16(
             ushort value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.UInt16, Complexity.Real);
             ushort* pr;
             pr = (ushort*)result.RealElements;
@@ -829,7 +829,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.UInt16, Complexity.Real);
             unsafe
             {
@@ -849,7 +849,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromUInt16_Cplx(
             Complex<ushort> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.UInt16, Complexity.Complex);
             ushort* pr, pi;
 
@@ -876,7 +876,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.UInt16, Complexity.Complex);
             unsafe
             {
@@ -900,7 +900,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromInt16(
             short value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Int16, Complexity.Real);
             short* pr;
             pr = (short*)result.RealElements;
@@ -923,7 +923,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Int16, Complexity.Real);
             unsafe
             {
@@ -943,7 +943,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromInt16_Cplx(
             Complex<short> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Int16, Complexity.Complex);
             short* pr, pi;
 
@@ -970,7 +970,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Int16, Complexity.Complex);
             unsafe
             {
@@ -994,7 +994,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromUInt32(
             uint value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.UInt32, Complexity.Real);
             uint* pr;
             pr = (uint*)result.RealElements;
@@ -1017,7 +1017,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.UInt32, Complexity.Real);
             unsafe
             {
@@ -1037,7 +1037,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromUInt32_Cplx(
             Complex<uint> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.UInt32, Complexity.Complex);
             uint* pr, pi;
 
@@ -1064,7 +1064,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.UInt32, Complexity.Complex);
             unsafe
             {
@@ -1088,7 +1088,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromInt32(
             int value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Int32, Complexity.Real);
             int* pr;
             pr = (int*)result.RealElements;
@@ -1111,7 +1111,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Int32, Complexity.Real);
             unsafe
             {
@@ -1131,7 +1131,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromInt32_Cplx(
             Complex<int> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Int32, Complexity.Complex);
             int* pr, pi;
 
@@ -1158,7 +1158,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Int32, Complexity.Complex);
             unsafe
             {
@@ -1182,7 +1182,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromUInt64(
             ulong value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.UInt64, Complexity.Real);
             ulong* pr;
             pr = (ulong*)result.RealElements;
@@ -1205,7 +1205,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.UInt64, Complexity.Real);
             unsafe
             {
@@ -1225,7 +1225,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromUInt64_Cplx(
             Complex<ulong> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.UInt64, Complexity.Complex);
             ulong* pr, pi;
 
@@ -1252,7 +1252,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.UInt64, Complexity.Complex);
             unsafe
             {
@@ -1276,7 +1276,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromInt64(
             long value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Int64, Complexity.Real);
             long* pr;
             pr = (long*)result.RealElements;
@@ -1299,7 +1299,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Int64, Complexity.Real);
             unsafe
             {
@@ -1319,7 +1319,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromInt64_Cplx(
             Complex<long> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Int64, Complexity.Complex);
             long* pr, pi;
 
@@ -1346,7 +1346,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Int64, Complexity.Complex);
             unsafe
             {
@@ -1370,7 +1370,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromSingle(
             float value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Single, Complexity.Real);
             float* pr;
             pr = (float*)result.RealElements;
@@ -1393,7 +1393,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Single, Complexity.Real);
             unsafe
             {
@@ -1413,7 +1413,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromSingle_Cplx(
             Complex<float> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Single, Complexity.Complex);
             float* pr, pi;
 
@@ -1440,7 +1440,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Single, Complexity.Complex);
             unsafe
             {
@@ -1464,7 +1464,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromDouble(
             double value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Double, Complexity.Real);
             double* pr;
             pr = (double*)result.RealElements;
@@ -1487,7 +1487,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Double, Complexity.Real);
             unsafe
             {
@@ -1507,7 +1507,7 @@ namespace LabSharp
         unsafe static MxArray _MxArrayFromDouble_Cplx(
             Complex<double> value)
         {
-            MxArray result = MxArray.CreateNumericArray(new int[] { 1 },
+            MxArray result = MxArray.CreateArray(new int[] { 1 },
                 ClassID.Double, Complexity.Complex);
             double* pr, pi;
 
@@ -1534,7 +1534,7 @@ namespace LabSharp
             {
                 dims = (int[])arraydims.Clone();
             }
-            MxArray result = MxArray.CreateNumericArray(dims,
+            MxArray result = MxArray.CreateArray(dims,
                 ClassID.Double, Complexity.Complex);
             unsafe
             {
