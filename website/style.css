@@ -1,0 +1,145 @@
+body
+{
+	background: black;
+	color: white;
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10pt;
+	margin-right : 14em;
+}
+
+img
+{
+	border: 0;
+}
+
+.header img
+{
+	float:left;
+}
+
+.header h1
+{
+	margin: 0;
+	padding: 25px 0 25px 0;
+	font-size: 100px;
+}
+
+h2
+{
+	line-height: 22px;
+}
+
+body > h2
+{
+	font-size: 22px;
+	border-bottom: 1px solid #111;
+}
+
+h2 img
+{
+	margin-right: 0.25em;
+	vertical-align: top;
+}
+
+code
+{
+	background-color: #0F0F0F;
+	color: #d98bec;
+}
+
+pre.code
+{
+	margin: 1em 3em 1em 1em;
+	padding: 1em;
+	background-color: #0F0F0F;
+	border-left: 3px solid #909090;
+	overflow: auto;
+}
+
+pre.code .keyword
+{
+	color: #AAAAFF;
+}
+
+pre.code .string
+{
+	color: #AAFFAA;
+}
+
+pre.code .comment
+{
+	color: #888888;
+}
+
+a {
+	color: #CCF;
+}
+
+a:hover {
+	color: #FFF;
+	background-color:#55A;
+	text-decoration: none;
+}
+
+li
+{
+	list-style: square;
+}
+
+#linkblock
+{
+	position: absolute;
+	border : 1px solid #1A111A;
+	padding: 0;
+	margin: 0.5em;
+	width: 13em;
+	right: 0;
+	top: 0;
+	text-align:center;
+}
+
+/* Internet Explorer, please turn your head 30s, thanks */
+body > #linkblock
+{
+	position: fixed;
+}
+
+#linkblock ul
+{
+	margin: 0.5em;
+	padding: 0;
+}
+
+#linkblock li
+{
+	margin: 0;
+	padding: 0;
+	list-style:none;
+}
+
+#linkblock h2
+{
+	font-size: 10pt;
+	margin: 0;
+	padding: 0;
+	margin-bottom: 0.5em;
+	background-color: #1A111A;
+}
+
+dt
+{
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+	font-weight: bold;
+}
+
+#sourceforge-logo
+{
+	text-align: center;
+}
+
+.copyright
+{
+	text-align: center;
+	color: #888;
+}

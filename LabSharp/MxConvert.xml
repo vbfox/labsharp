@@ -1,0 +1,72 @@
+<?xml-stylesheet type="text/xsl" href="MxConvert.xsl"?>
+<MxConvert>
+  <Convert csharpType="char" matlabType="Char" name="Char"/>
+  
+	<Convert csharpType="bool" matlabType="Logical" name="Boolean"/>
+
+	<Convert csharpType="sbyte" matlabType="Int8" name="SByte"/>
+	<Convert csharpType="byte" matlabType="UInt8" name="Byte"/>
+
+	<Convert csharpType="ushort" matlabType="UInt16" name="UInt16">
+		<CastFrom matlabType="UInt8" />
+		<CastFrom matlabType="Int8" />
+	</Convert>
+	<Convert csharpType="short" matlabType="Int16" name="Int16">
+		<CastFrom matlabType="UInt8" />
+		<CastFrom matlabType="Int8" />
+	</Convert>
+
+	<Convert csharpType="uint" matlabType="UInt32" name="UInt32">
+		<CastFrom matlabType="UInt8" />
+		<CastFrom matlabType="Int8" />	
+		<CastFrom matlabType="UInt16" />
+		<CastFrom matlabType="Int16" />
+	</Convert>
+	<Convert csharpType="int" matlabType="Int32" name="Int32">
+		<CastFrom matlabType="UInt8" />
+		<CastFrom matlabType="Int8" />	
+		<CastFrom matlabType="UInt16" />
+		<CastFrom matlabType="Int16" />
+	</Convert>
+
+	<Convert csharpType="ulong" matlabType="UInt64" name="UInt64">
+		<CastFrom matlabType="UInt8" />
+		<CastFrom matlabType="Int8" />	
+		<CastFrom matlabType="UInt16" />
+		<CastFrom matlabType="Int16" />	
+		<CastFrom matlabType="UInt32" />
+		<CastFrom matlabType="Int32" />
+	</Convert>
+	<Convert csharpType="long" matlabType="Int64" name="Int64">
+		<CastFrom matlabType="UInt8" />
+		<CastFrom matlabType="Int8" />	
+		<CastFrom matlabType="UInt16" />
+		<CastFrom matlabType="Int16" />	
+		<CastFrom matlabType="UInt32" />
+		<CastFrom matlabType="Int32" />
+	</Convert>
+
+	<Convert csharpType="float" matlabType="Single" name="Single">
+		<CastFrom matlabType="UInt8" />
+		<CastFrom matlabType="Int8" />	
+		<CastFrom matlabType="UInt16" />
+		<CastFrom matlabType="Int16" />	
+		<CastFrom matlabType="UInt32" />
+		<CastFrom matlabType="Int32" />
+		<CastFrom matlabType="UInt64" />
+		<CastFrom matlabType="Int64" />
+	</Convert>
+
+	<Convert csharpType="double" matlabType="Double" name="Double">
+		<CastFrom matlabType="UInt8" />
+		<CastFrom matlabType="Int8" />	
+		<CastFrom matlabType="UInt16" />
+		<CastFrom matlabType="Int16" />	
+		<CastFrom matlabType="UInt32" />
+		<CastFrom matlabType="Int32" />
+		<CastFrom matlabType="UInt64" />
+		<CastFrom matlabType="Int64" />
+		<CastFrom matlabType="Single" />
+	</Convert>
+	
+</MxConvert>

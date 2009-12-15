@@ -1,0 +1,142 @@
+<html>
+	<head>
+		<title>Lab#</title>
+		<link rel="stylesheet" href="style.css" type="text/css">
+	</head>
+	<body>
+		<!-- ***************************************************************************** -->
+
+		<div id="linkblock">
+			<h2>Lab#</h2>
+			<ul>
+				<li><a href="#description">Description</a></li>
+				<li><a href="#download">Download</a></li>
+				<li><a href="#exemples">Exemples</a></li>
+				<li><a href="#faq">FAQ</a></li>
+			</ul>
+		</div>
+
+		<!-- ***************************************************************************** -->
+
+		<div class="header">
+			<img src="logo.png" />
+			<h1>Lab#</h1>
+		</div>
+
+		<!-- ***************************************************************************** -->
+
+		<h2><img src="internet-web-browser.png" /><a name="description"></a>Description</h2>
+		<p>
+		Lab# is a .Net library written in C# 2.0 to interact with MATLAB&reg; from any .Net application.
+		<br />
+		Technically Lab# is a wrapper around the
+		<a href="http://www.mathworks.com/access/helpdesk/help/techdoc/apiref/">MATLAB engine API</a>.
+		This API allow you to get and put matrices in MATLAB.
+		</p>
+
+		<!-- ***************************************************************************** -->
+
+		<h2><img src="document-save.png" /><a name="download"></a>Download</h2>
+		<p>
+		<a href="http://sourceforge.net/project/showfiles.php?group_id=163049&amp;package_id=184172&amp;release_id=418714">Version 1.0 Alpha 1 source code</a>
+		</p>
+		<p>
+		Latest version is always in SVN, the URL is : <code>https://svn.sourceforge.net/svnroot/labsharp</code>.
+		<br />
+		If you don't have any SVN client, under windows
+		<a href="http://tortoisesvn.sourceforge.net/">Tortoise SVN</a> is a good choice
+		(Integrated into the shell).
+		</p>
+
+		
+
+		<!-- ***************************************************************************** -->
+
+		<h2><img src="utilities-terminal.png" /><a name="exemples"></a>Exemples</h2>
+		<pre class="code"><span class="comment">// This exemple create an array with the values of the function
+// f(x) = sin(x / 10); on the [0..100] range and display it in matlab.</span>
+
+<span class="keyword">using</span> System;
+<span class="keyword">using</span> LabSharp;
+
+<span class="keyword">class</span> Program
+{
+    <span class="keyword">static void</span> Main(<span class="keyword">string</span>[] args)
+    {
+        <span class="keyword">double</span>[] sin = <span class="keyword">new double</span>[100];
+
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; sin.Length; i++)
+        {
+            sin[i] = Math.Sin(i / 10.0);
+        }
+        <span class="keyword">using</span> (Engine eng = Engine.Open())
+        {
+            eng.SetVariable(<span class="string">"sin"</span>, sin);
+            eng.Eval(<span class="string">"plot(sin); figure(gcf)"</span>);
+        }
+    }
+}</pre>
+		<pre class="code"><span class="comment">// This exemple fill an array with random values, send it to MATLAB and use
+// MATLAB to calculate the mean value, then display the result in C#.</span>
+
+<span class="keyword">using</span> System;
+<span class="keyword">using</span> LabSharp;
+
+<span class="keyword">class</span> Program
+{
+    <span class="keyword">static void</span> Main(<span class="keyword">string</span>[] args)
+    {
+        Random rnd = new Random();
+        <span class="keyword">double</span>[] dataArray = <span class="keyword">new double</span>[100];
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; dataArray.Length; i++)
+        {
+            dataArray[i] = rnd.NextDouble() * 100;
+        }
+        <span class="keyword">using</span> (Engine eng = Engine.Open())
+        {
+            eng.SetVariable(<span class="string">"data"</span>, dataArray);
+            eng.Eval(<span class="string">"data_mean = mean(data)"</span>);
+            Console.WriteLine(<span class="string">"The mean is : {0}"</span>, eng.GetVariable&lt;<span class="keyword">double</span>&gt;(<span class="string">"data_mean"</span>));
+
+            <span class="comment">// Clean up</span>
+            eng.Eval(<span class="string">"clear data"</span>);
+            eng.Eval(<span class="string">"clear data_mean"</span>);
+        }
+        Console.ReadKey();
+    }
+}</pre>
+
+		<!-- ***************************************************************************** -->
+
+		<h2><img src="help-browser.png" /><a name="faq"></a>FAQ</h2>
+		<dl>
+			<dt>What is the license of Lab# ?</dt>
+			<dd>Lab# uses the <a href="http://www.gnu.org/licenses/lgpl.txt">GNU Lesser General Public License (LGPL)</a> license. Here is a simple description :
+			<ul>
+				<li>You could use it in any project : commercial, free software, open source or other.</li>
+				<li>You have to distribute the source code of this library with any program that use it OR give a way for users to find it (A link to the <a href="http://sourceforge.net/projects/labsharp/">sourceforge page</a> is a good way to apply this)</li>
+				<li>If you change anything in this library you should distribute the modified source code under the LGPL license.</li>
+			</ul>
+
+			<dt>Why did this library exists, as MATLAB now provide .Net support ?</dt>
+			<dd>
+			It's true that MATLAB starting from R2006a support direct access from .Net with
+			the <code>MWArray</code> class. But this project was started before, and i still
+			think that it have some advantages :
+			<ul>
+				<li>Better integration with C# 2.0 (Using generics).</li>
+				<li>
+				Try to minimise the use of the array wrapper class (Basic operations should be done without it).
+				</li>
+				<li>It works with older versions of MATLAB.</li>
+			</ul>
+			There are also features not supported by Lab# but provided by <code>MWArray</code> like Cell Arrays,
+			and an official support from MathWorks.
+			</dd>
+		</dl>
+		<p class="copyright">By Roncaglia Julien (black-fox)</p>
+		<div id="sourceforge-logo">
+			<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=167600&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>
+		</div>
+	</body>
+</html>
