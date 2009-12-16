@@ -110,7 +110,8 @@ namespace tmp_scilab_bin
         static char c__0 = (char)0;
         static char c__1 = (char)1;
 
-        unsafe void c2f(int* id, char* str, int* job, int str_len)
+        /*
+        unsafe void c2f0(int* id, char* str, int* job, int str_len)
         {
             Func<int, int, int> min = (a, b) => Math.Min(a, b);
             Func<int, int> abs = (i) => Math.Abs(i);
@@ -121,84 +122,95 @@ namespace tmp_scilab_bin
             fixed (int* name__ = name)
             {
 
-                /* Parameter adjustments */
+                // Parameter adjustments
                 --id;
 
-                /* Function Body */
-
-                if (*job != 0)
+                // Computing MIN
+                i__1 = 24;
+                i__2 = i_len(str, str_len);
+                ln = min(i__1, i__2);
+                cvstr_(&ln, name__, str, &c__0, str_len);
+                if (ln < 24)
                 {
-                    i1 = 1;
-                    for (l = 1; l <= 6; ++l)
-                    {
-                        idl = id[l];
-                        i__1 = i1 + 3;
-                        for (i__ = i1; i__ <= i__1; ++i__)
-                        {
-                            k = (idl + 128) / 256;
-                            if (k < 0)
-                            {
-                                --k;
-                            }
-                            ch = idl - (k << 8);
-                            idl = k;
-                            if (abs(ch) >= 63)
-                            {
-                                ch = star;
-                            }
-                            if (ch > 0)
-                            {
-                                *(char*)&str[i__ - 1] = alfa[ch];
-                            }
-                            else
-                            {
-                                *(char*)&str[i__ - 1] = alfb[-ch];
-                            }
-                        }
-                        i1 += 4;
-                    }
+                    i__1 = 24 - ln;
+                    iset_(&i__1, &blank, &name__[ln], &c__1);
                 }
-                else
+                i1 = 1;
+                for (l = 1; l <= 6; ++l)
                 {
-                    /* Computing MIN */
-                    i__1 = 24;
-                    i__2 = i_len(str, str_len);
-                    ln = min(i__1, i__2);
-                    cvstr_(&ln, name__, str, &c__0, str_len);
-                    if (ln < 24)
+                    id[l] = 0;
+                    for (i__ = 1; i__ <= 4; ++i__)
                     {
-                        i__1 = 24 - ln;
-                        iset_(&i__1, &blank, &name__[ln], &c__1);
+                        ii = i1 + 4 - i__;
+                        id[l] = (id[l] << 8) + name__[ii - 1];
                     }
-                    i1 = 1;
-                    for (l = 1; l <= 6; ++l)
+                    i1 += 4;
+                }
+            }
+        }*/
+        /*
+        static unsafe string c2f1(int[] id)
+        {
+            char[] result = new char[24];
+            
+            fixed (int* pId = id)
+            {
+                return c2f1(pId);
+            }
+        }*/
+
+        static unsafe string VariableNameToString(int[] name)
+        {
+            var result = new StringBuilder(name.Length * 4);
+
+            foreach(var current in name)
+            {
+                var current_ = current;
+
+                for (var x = 0; x < 4; x++)
+                {
+                    var k = (current_ + 128) / 256;
+                    if (k < 0) k -= 1;
+                    var currentChar = current_ - (k << 8);
+                    current_ = k;
+
+                    var charArray = (currentChar > 0) ? alfa : alfb;
+                    currentChar = Math.Abs(currentChar);
+                    
+                    if (currentChar >= 63)
                     {
-                        id[l] = 0;
-                        for (i__ = 1; i__ <= 4; ++i__)
-                        {
-                            ii = i1 + 4 - i__;
-                            id[l] = (id[l] << 8) + name__[ii - 1];
-                        }
-                        i1 += 4;
+                        result.Append('*');
+                    }
+                    else
+                    {
+                        result.Append(charArray[currentChar]);
                     }
                 }
             }
+
+            return result.ToString();
         }
 
-        i_len
-
-        void Load(Stream s)
+        static void Load(Stream s)
         {
             while(s.Position != s.Length-1)
             {
-                byte[] buffer = new byte[6];
-                s.Read(buffer, 0, 6);
-
+                byte[] buffer = new byte[6*4];
+                s.Read(buffer, 0, buffer.Length);
+                int[] buffer2 = new int[buffer.Length/4];
+                for (int i = 0; i < buffer.Length; i+=4)
+                {
+                    buffer2[i/4] = BitConverter.ToInt32(buffer, i);
+                }
+                Console.WriteLine("[{0}]", VariableNameToString(buffer2));
+                return;
             }
         }
 
         static void Main(string[] args)
         {
+            Load(new FileStream(@"T:\vbfox\666.scilab", FileMode.Open));
+            Console.ReadLine();
         }
     }
 }
