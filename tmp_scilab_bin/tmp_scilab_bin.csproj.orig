@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8C543460-9810-4733-883A-8248A947EB47}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{8513E00B-A085-4B5C-955C-6F814718F2C7}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LabSharp.Core.Tests</RootNamespace>
-    <AssemblyName>LabSharp.Core.Tests</AssemblyName>
+    <RootNamespace>LabSharp</RootNamespace>
+    <AssemblyName>tmp_scilab_bin</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
