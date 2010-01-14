@@ -72,6 +72,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Scilab\TestFiles\complex_and_float_matrix.scilab" />
     <None Include="Scilab\TestFiles\complex_matrix.scilab" />
     <None Include="Scilab\TestFiles\float_matrix.scilab" />
   </ItemGroup>
