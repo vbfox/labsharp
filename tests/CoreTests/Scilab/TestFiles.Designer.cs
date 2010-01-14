@@ -60,6 +60,13 @@ namespace LabSharp.Tests.Scilab {
             }
         }
         
+        internal static byte[] complex_and_float_matrix {
+            get {
+                object obj = ResourceManager.GetObject("complex_and_float_matrix", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] complex_matrix {
             get {
                 object obj = ResourceManager.GetObject("complex_matrix", resourceCulture);
