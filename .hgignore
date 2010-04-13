@@ -3,3 +3,5 @@ syntax: glob
 *.suo
 *\bin\*
 *\obj\*
+*.user
+*.orig
