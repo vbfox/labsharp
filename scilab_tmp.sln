@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "srcs\Core\Core.csproj", "{6BFBD46F-98F0-44C7-BB0C-9D91AE737946}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTests", "tests\CoreTests\CoreTests.csproj", "{8C543460-9810-4733-883A-8248A947EB47}"
